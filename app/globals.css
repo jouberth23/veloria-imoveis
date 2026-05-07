@@ -1,0 +1,60 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --gold: #C9A84C;
+    --border: rgba(201, 168, 76, 0.18);
+  }
+
+  * { box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    @apply bg-deep text-off-white font-sans;
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3, h4, h5 {
+    @apply font-serif;
+  }
+}
+
+@layer components {
+  .input-field {
+    @apply w-full bg-white/5 border border-white/10 rounded-lg text-off-white px-3.5 py-2.5 text-sm font-sans outline-none transition-colors duration-200 focus:border-gold;
+    -webkit-appearance: none;
+  }
+  .input-field option {
+    @apply bg-card;
+  }
+
+  .form-input {
+    @apply w-full bg-white/5 border border-white/10 rounded-xl text-off-white px-3.5 py-3 text-sm font-sans outline-none transition-colors duration-200 focus:border-gold;
+    -webkit-appearance: none;
+  }
+  .form-input option {
+    @apply bg-card;
+  }
+}
+
+@layer utilities {
+  .text-balance { text-wrap: balance; }
+
+  .gold-border { border-color: rgba(201, 168, 76, 0.18); }
+
+  .bg-grid {
+    background-image:
+      linear-gradient(rgba(201,168,76,.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(201,168,76,.04) 1px, transparent 1px);
+    background-size: 60px 60px;
+  }
+
+  .gold-glow {
+    box-shadow: 0 0 40px rgba(201, 168, 76, 0.15);
+  }
+}

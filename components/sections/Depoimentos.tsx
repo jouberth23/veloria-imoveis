@@ -1,0 +1,80 @@
+'use client'
+
+import Image from 'next/image'
+import { motion, useInView } from 'framer-motion'
+import { useRef } from 'react'
+import { DEPOIMENTOS } from '@/lib/constants'
+
+const AVATARS = [
+  'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=120&q=80',
+  'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=120&q=80',
+  'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=120&q=80',
+]
+
+export function Depoimentos() {
+  const ref = useRef(null)
+  const inView = useInView(ref, { once: true, margin: '-80px' })
+
+  return (
+    <section id="depoimentos" className="py-28 bg-deep" ref={ref}>
+      <div className="max-w-7xl mx-auto px-6">
+        <motion.div
+          className="text-center mb-16"
+          initial={{ opacity: 0, y: 24 }}
+          animate={inView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.6 }}
+        >
+          <span className="text-gold text-xs font-semibold tracking-widest uppercase">Clientes Satisfeitos</span>
+          <h2 className="font-serif text-[clamp(1.8rem,3.5vw,2.8rem)] mt-2">
+            O que dizem sobre <span className="text-gold">a Velória</span>
+          </h2>
+          <p className="text-muted text-sm mt-3 max-w-md mx-auto">
+            A confiança dos nossos clientes é o nosso maior patrimônio.
+          </p>
+        </motion.div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {DEPOIMENTOS.map((dep, i) => (
+            <motion.div
+              key={dep.id}
+              initial={{ opacity: 0, y: 32 }}
+              animate={inView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.6, delay: i * 0.12 }}
+              className="relative bg-card border border-border rounded-2xl p-8 hover:border-gold/30 transition-all duration-300 group hover:-translate-y-1"
+            >
+              {/* Big quote mark */}
+              <span className="absolute top-5 right-6 font-serif text-8xl text-gold/8 leading-none select-none group-hover:text-gold/13 transition-colors">"</span>
+
+              {/* Stars */}
+              <div className="flex gap-1 mb-5">
+                {Array.from({ length: dep.estrelas }).map((_, j) => (
+                  <svg key={j} width="14" height="14" viewBox="0 0 24 24" fill="#C9A84C">
+                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                  </svg>
+                ))}
+              </div>
+
+              <p className="text-off-white/70 text-sm leading-relaxed mb-8 relative z-10">{dep.texto}</p>
+
+              <div className="flex items-center gap-3.5 pt-5 border-t border-border">
+                <div className="relative w-12 h-12 rounded-full overflow-hidden border-2 border-gold/30 flex-shrink-0">
+                  <Image
+                    src={AVATARS[i]}
+                    alt={dep.nome}
+                    fill
+                    className="object-cover"
+                    sizes="48px"
+                  />
+                </div>
+                <div>
+                  <div className="font-semibold text-sm">{dep.nome}</div>
+                  <div className="text-muted text-xs mt-0.5">{dep.tipo}</div>
+                </div>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}

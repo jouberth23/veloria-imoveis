@@ -19,37 +19,30 @@ export function CTA() {
   }
 
   return (
-    <section id="cta" className="py-24 bg-deep relative" ref={ref}>
-      {/* Top separator */}
-      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-gold/25 to-transparent" />
+    <section id="cta" className="py-24 bg-card border-y border-white/5" ref={ref}>
+      <div className="max-w-7xl mx-auto px-6 lg:px-8">
+        <div className="relative rounded-3xl overflow-hidden border border-white/5">
 
-      <div className="max-w-7xl mx-auto px-6">
-        <div className="relative rounded-3xl overflow-hidden border border-border">
-
-          {/* Background image */}
+          {/* Background */}
           <div className="absolute inset-0">
             <Image
-              src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=1200&q=80"
-              alt="Contato"
+              src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=1400&q=85"
+              alt="Contato Velória Imóveis"
               fill
               className="object-cover object-center"
             />
-            <div className="absolute inset-0 bg-gradient-to-r from-deep/98 via-deep/92 to-deep/80" />
-            <div className="absolute inset-0 bg-gradient-to-t from-deep/40 via-transparent to-transparent" />
+            <div className="absolute inset-0" style={{ background: 'linear-gradient(105deg, rgba(9,17,31,0.98) 0%, rgba(9,17,31,0.95) 45%, rgba(9,17,31,0.82) 70%, rgba(9,17,31,0.65) 100%)' }} />
           </div>
 
           {/* Gold glows */}
           <div
-            className="absolute top-0 left-0 w-80 h-80 pointer-events-none"
-            style={{ background: 'radial-gradient(circle, rgba(201,168,76,.12) 0%, transparent 70%)' }}
+            className="absolute -top-20 -left-20 w-80 h-80 pointer-events-none"
+            style={{ background: 'radial-gradient(circle, rgba(201,168,76,0.12) 0%, transparent 70%)' }}
           />
           <div
-            className="absolute bottom-0 right-0 w-96 h-96 pointer-events-none"
-            style={{ background: 'radial-gradient(circle, rgba(201,168,76,.08) 0%, transparent 70%)' }}
+            className="absolute -bottom-20 -right-20 w-96 h-96 pointer-events-none"
+            style={{ background: 'radial-gradient(circle, rgba(201,168,76,0.07) 0%, transparent 70%)' }}
           />
-
-          {/* Grid overlay */}
-          <div className="absolute inset-0 bg-grid opacity-20 pointer-events-none" />
 
           <div className="relative grid grid-cols-1 lg:grid-cols-2 gap-12 p-10 lg:p-16">
 
@@ -57,20 +50,17 @@ export function CTA() {
             <motion.div
               initial={{ opacity: 0, x: -24 }}
               animate={inView ? { opacity: 1, x: 0 } : {}}
-              transition={{ duration: 0.7 }}
+              transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
               className="flex flex-col justify-center"
             >
-              <motion.div
-                className="inline-flex items-center gap-2 bg-gold/15 border border-gold/30 px-4 py-1.5 rounded-full text-gold text-xs font-semibold tracking-widest uppercase mb-5 w-fit"
-              >
-                <span className="w-1.5 h-1.5 bg-gold rounded-full animate-pulse" />
+              <p className="text-gold text-[0.7rem] font-semibold tracking-[0.2em] uppercase mb-4">
                 Pronto para começar?
-              </motion.div>
-
-              <h2 className="font-serif text-[clamp(1.7rem,3vw,2.7rem)] mb-4 leading-tight">
-                Seu próximo imóvel <span className="text-gold">começa aqui.</span>
+              </p>
+              <h2 className="font-serif leading-tight mb-5" style={{ fontSize: 'clamp(1.8rem, 3vw, 2.7rem)' }}>
+                Seu próximo imóvel{' '}
+                <span className="text-gold">começa aqui.</span>
               </h2>
-              <p className="text-muted text-sm leading-relaxed mb-8 max-w-md">
+              <p className="text-muted text-sm leading-relaxed mb-10 max-w-md">
                 Fale agora com um de nossos especialistas e dê o primeiro passo rumo ao imóvel dos seus sonhos. Atendimento personalizado, sem compromisso.
               </p>
 
@@ -79,7 +69,7 @@ export function CTA() {
                   href={WHATSAPP_URL}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-2.5 text-white font-semibold text-sm px-6 py-3 rounded-xl hover:brightness-110 transition-all"
+                  className="flex items-center gap-2.5 text-white font-semibold text-sm px-6 py-3.5 rounded-xl hover:brightness-110 transition-all duration-200"
                   style={{ background: 'linear-gradient(135deg, #25D366, #1aad52)', boxShadow: '0 4px 20px rgba(37,211,102,0.25)' }}
                 >
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
@@ -90,17 +80,19 @@ export function CTA() {
                 </a>
                 <a
                   href="tel:+5531999999999"
-                  className="border border-border text-gold text-sm font-medium px-6 py-3 rounded-xl hover:bg-gold/10 hover:border-gold transition-all"
+                  className="flex items-center border border-border text-gold text-sm font-medium px-6 py-3.5 rounded-xl hover:bg-gold/8 hover:border-gold transition-all duration-200"
                 >
                   Ligar Agora
                 </a>
               </div>
 
-              {/* Trust indicators */}
               <div className="flex flex-wrap gap-5 text-xs text-muted">
                 {['Resposta em até 1h', 'Sem compromisso', 'Corretor exclusivo'].map(item => (
                   <div key={item} className="flex items-center gap-2">
-                    <div className="w-4 h-4 bg-gold/15 border border-gold/30 rounded-full flex items-center justify-center flex-shrink-0">
+                    <div
+                      className="w-4 h-4 rounded-full flex items-center justify-center flex-shrink-0"
+                      style={{ background: 'rgba(201,168,76,0.12)', border: '1px solid rgba(201,168,76,0.25)' }}
+                    >
                       <svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" strokeWidth="3">
                         <polyline points="20 6 9 17 4 12"/>
                       </svg>
@@ -111,13 +103,13 @@ export function CTA() {
               </div>
             </motion.div>
 
-            {/* Right - form */}
+            {/* Form */}
             <motion.form
               onSubmit={handleSubmit}
               initial={{ opacity: 0, x: 24 }}
               animate={inView ? { opacity: 1, x: 0 } : {}}
-              transition={{ duration: 0.7, delay: 0.15 }}
-              className="flex flex-col gap-4 bg-deep/60 backdrop-blur-md rounded-2xl p-7 border border-border"
+              transition={{ duration: 0.8, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
+              className="flex flex-col gap-4 bg-deep/65 backdrop-blur-md rounded-2xl p-7 border border-white/5"
               style={{ boxShadow: '0 8px 40px rgba(0,0,0,0.4)' }}
             >
               <div className="mb-1">
@@ -125,36 +117,25 @@ export function CTA() {
                 <p className="text-muted text-xs mt-1">Retorno garantido em até 1 hora útil</p>
               </div>
 
-              <FormField label="Nome Completo">
-                <input
-                  type="text" required placeholder="Seu nome"
-                  value={form.nome} onChange={e => setForm(f => ({ ...f, nome: e.target.value }))}
-                  className="form-input"
-                />
-              </FormField>
+              <Field label="Nome Completo">
+                <input type="text" required placeholder="Seu nome" value={form.nome}
+                  onChange={e => setForm(f => ({ ...f, nome: e.target.value }))} className="form-input" />
+              </Field>
 
               <div className="grid grid-cols-2 gap-3">
-                <FormField label="E-mail">
-                  <input
-                    type="email" required placeholder="seu@email.com"
-                    value={form.email} onChange={e => setForm(f => ({ ...f, email: e.target.value }))}
-                    className="form-input"
-                  />
-                </FormField>
-                <FormField label="Telefone">
-                  <input
-                    type="tel" required placeholder="(31) 9 0000-0000"
-                    value={form.telefone} onChange={e => setForm(f => ({ ...f, telefone: e.target.value }))}
-                    className="form-input"
-                  />
-                </FormField>
+                <Field label="E-mail">
+                  <input type="email" required placeholder="seu@email.com" value={form.email}
+                    onChange={e => setForm(f => ({ ...f, email: e.target.value }))} className="form-input" />
+                </Field>
+                <Field label="Telefone">
+                  <input type="tel" required placeholder="(31) 9 0000-0000" value={form.telefone}
+                    onChange={e => setForm(f => ({ ...f, telefone: e.target.value }))} className="form-input" />
+                </Field>
               </div>
 
-              <FormField label="Interesse">
-                <select
-                  value={form.interesse} onChange={e => setForm(f => ({ ...f, interesse: e.target.value }))}
-                  className="form-input"
-                >
+              <Field label="Interesse">
+                <select value={form.interesse}
+                  onChange={e => setForm(f => ({ ...f, interesse: e.target.value }))} className="form-input">
                   <option value="">Selecione...</option>
                   <option>Comprar um imóvel</option>
                   <option>Vender meu imóvel</option>
@@ -163,14 +144,17 @@ export function CTA() {
                   <option>Financiamento</option>
                   <option>Administração de condomínio</option>
                 </select>
-              </FormField>
+              </Field>
 
               <button
                 type="submit"
-                className="w-full text-deep font-bold py-3.5 rounded-xl transition-all tracking-wide text-sm mt-1 hover:brightness-105 active:scale-[0.99]"
-                style={{ background: sent ? '#22c55e' : 'linear-gradient(135deg, #C9A84C, #E2C06A)', boxShadow: '0 4px 20px rgba(201,168,76,0.25)' }}
+                className="w-full text-deep font-bold py-3.5 rounded-xl transition-all duration-200 tracking-wide text-sm mt-1 hover:brightness-105 active:scale-[0.99]"
+                style={{
+                  background: sent ? '#22c55e' : 'linear-gradient(135deg, #C9A84C, #D8B860)',
+                  boxShadow: '0 4px 20px rgba(201,168,76,0.22)',
+                }}
               >
-                {sent ? '✓ Mensagem enviada! Entraremos em contato em breve.' : 'Solicitar Atendimento →'}
+                {sent ? '✓ Mensagem enviada! Entraremos em contato.' : 'Solicitar Atendimento →'}
               </button>
             </motion.form>
           </div>
@@ -180,10 +164,10 @@ export function CTA() {
   )
 }
 
-function FormField({ label, children }: { label: string; children: React.ReactNode }) {
+function Field({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <div className="flex flex-col gap-1.5">
-      <label className="text-[0.68rem] font-bold tracking-widest uppercase text-gold/80">{label}</label>
+      <label className="text-[0.65rem] font-bold tracking-[0.18em] uppercase text-gold/75">{label}</label>
       {children}
     </div>
   )

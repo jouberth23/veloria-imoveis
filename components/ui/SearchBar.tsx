@@ -24,8 +24,7 @@ export function SearchBar({ onSearch, className = '' }: Props) {
   return (
     <form
       onSubmit={handleSubmit}
-      className={`bg-card/90 border border-border rounded-2xl p-5 flex flex-wrap gap-3 items-end backdrop-blur-md ${className}`}
-      style={{ boxShadow: '0 8px 40px rgba(0,0,0,0.4), 0 0 0 1px rgba(201,168,76,0.08)' }}
+      className={`bg-card/90 border border-border rounded-xl p-5 flex flex-wrap gap-3 items-end backdrop-blur-sm ${className}`}
     >
       <Field label="Tipo de Imóvel">
         <select
@@ -81,8 +80,7 @@ export function SearchBar({ onSearch, className = '' }: Props) {
 
       <button
         type="submit"
-        className="flex items-center gap-2 text-deep font-semibold text-sm px-6 py-[11px] rounded-xl hover:brightness-105 active:scale-[0.98] transition-all whitespace-nowrap"
-        style={{ background: 'linear-gradient(135deg, #C9A84C, #D4B86A)', boxShadow: '0 3px 16px rgba(201,168,76,0.3)' }}
+        className="flex items-center gap-2 bg-gold text-deep font-semibold text-sm px-6 py-[11px] rounded-lg hover:bg-gold-light transition-colors whitespace-nowrap"
       >
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
           <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>

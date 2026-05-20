@@ -18,7 +18,7 @@ export function Header() {
   const [menuOpen, setMenuOpen] = useState(false)
 
   useEffect(() => {
-    const handler = () => setScrolled(window.scrollY > 48)
+    const handler = () => setScrolled(window.scrollY > 40)
     window.addEventListener('scroll', handler, { passive: true })
     return () => window.removeEventListener('scroll', handler)
   }, [])
@@ -26,120 +26,98 @@ export function Header() {
   return (
     <>
       <header
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
           scrolled
-            ? 'bg-deep/90 backdrop-blur-xl py-3'
+            ? 'bg-deep/80 backdrop-blur-md shadow-[0_2px_32px_rgba(0,0,0,.4)] py-3'
             : 'py-5'
         }`}
-        style={scrolled ? { boxShadow: '0 1px 0 rgba(201,168,76,0.12), 0 4px 24px rgba(0,0,0,0.4)' } : {}}
       >
-        <div className="max-w-7xl mx-auto px-6 lg:px-10 flex items-center justify-between">
-
-          {/* Logo */}
-          <Link href="/" className="flex items-center gap-2.5 group">
+        <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
+          <Link href="/" className="flex items-center gap-2.5">
             <LogoIcon />
-            <span className="font-serif text-[1.2rem] tracking-wide">
-              Velória{' '}
-              <span className="text-gold group-hover:text-gold-light transition-colors duration-200">
-                Imóveis
-              </span>
+            <span className="font-serif text-[1.25rem] tracking-wide">
+              Velória <span className="text-gold">Imóveis</span>
             </span>
           </Link>
 
-          {/* Nav */}
-          <nav className="hidden md:flex items-center gap-7">
+          <nav className="hidden md:flex items-center gap-8">
             {NAV_LINKS.map(link => (
               <Link
                 key={link.href}
                 href={link.href}
-                className="text-[0.82rem] font-medium text-muted hover:text-off-white transition-colors duration-200 relative group"
+                className="text-sm font-medium text-muted hover:text-off-white transition-colors relative group"
               >
                 {link.label}
-                <span className="absolute -bottom-0.5 left-0 w-0 h-px bg-gold group-hover:w-full transition-all duration-300 rounded-full" />
+                <span className="absolute -bottom-0.5 left-0 w-0 h-px bg-gold group-hover:w-full transition-all duration-300" />
               </Link>
             ))}
           </nav>
 
-          {/* CTA */}
-          <div className="hidden md:flex items-center gap-3">
+          <div className="hidden md:flex items-center gap-4">
             <a
               href={WHATSAPP_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-2 text-deep text-[0.82rem] font-semibold px-5 py-2.5 rounded-xl hover:brightness-105 active:scale-[0.98] transition-all duration-200"
-              style={{ background: 'linear-gradient(135deg, #C9A84C, #D8B860)', boxShadow: '0 2px 12px rgba(201,168,76,0.22)' }}
+              className="flex items-center gap-2 bg-gold text-deep text-sm font-semibold px-5 py-2.5 rounded-lg hover:bg-gold-light transition-colors"
             >
-              <WhatsAppIcon size={14} />
+              <WhatsAppIcon size={15} />
               Falar com Corretor
             </a>
           </div>
 
-          {/* Mobile hamburger */}
           <button
             onClick={() => setMenuOpen(true)}
-            className="md:hidden flex flex-col gap-1.5 p-1.5"
+            className="md:hidden flex flex-col gap-1.5 p-1"
             aria-label="Abrir menu"
           >
-            <span className="w-6 h-0.5 bg-off-white rounded-full" />
-            <span className="w-6 h-0.5 bg-off-white rounded-full" />
-            <span className="w-4 h-0.5 bg-off-white rounded-full" />
+            <span className="w-6 h-0.5 bg-off-white rounded" />
+            <span className="w-6 h-0.5 bg-off-white rounded" />
+            <span className="w-4 h-0.5 bg-off-white rounded" />
           </button>
         </div>
       </header>
 
-      {/* Mobile menu */}
       <AnimatePresence>
         {menuOpen && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.2 }}
-            className="fixed inset-0 z-[60] bg-deep/97 backdrop-blur-xl flex flex-col items-center justify-center"
+            className="fixed inset-0 z-[60] bg-deep/97 flex flex-col items-center justify-center gap-8"
           >
-            {/* Close */}
             <button
               onClick={() => setMenuOpen(false)}
-              className="absolute top-6 right-6 w-10 h-10 flex items-center justify-center text-muted hover:text-off-white border border-white/10 rounded-xl hover:border-white/20 transition-all duration-200"
-              aria-label="Fechar menu"
+              className="absolute top-6 right-6 text-muted hover:text-off-white text-2xl"
             >
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <line x1="18" y1="6" x2="6" y2="18"/>
-                <line x1="6" y1="6" x2="18" y2="18"/>
-              </svg>
+              ✕
             </button>
-
-            <div className="flex flex-col items-center gap-7">
-              {NAV_LINKS.map((link, i) => (
-                <motion.div
-                  key={link.href}
-                  initial={{ opacity: 0, y: 16 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: i * 0.07 }}
-                >
-                  <Link
-                    href={link.href}
-                    onClick={() => setMenuOpen(false)}
-                    className="font-serif text-[2rem] text-off-white hover:text-gold transition-colors duration-200"
-                  >
-                    {link.label}
-                  </Link>
-                </motion.div>
-              ))}
-
-              <motion.a
-                href={WHATSAPP_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                initial={{ opacity: 0, y: 16 }}
+            {NAV_LINKS.map((link, i) => (
+              <motion.div
+                key={link.href}
+                initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: NAV_LINKS.length * 0.07 }}
-                className="mt-3 text-white font-semibold text-base px-8 py-3.5 rounded-2xl"
-                style={{ background: 'linear-gradient(135deg, #25D366, #1aad52)', boxShadow: '0 4px 20px rgba(37,211,102,0.3)' }}
+                transition={{ delay: i * 0.08 }}
               >
-                Falar com Corretor
-              </motion.a>
-            </div>
+                <Link
+                  href={link.href}
+                  onClick={() => setMenuOpen(false)}
+                  className="font-serif text-3xl text-off-white hover:text-gold transition-colors"
+                >
+                  {link.label}
+                </Link>
+              </motion.div>
+            ))}
+            <motion.a
+              href={WHATSAPP_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: NAV_LINKS.length * 0.08 }}
+              className="mt-4 bg-[#25D366] text-white px-8 py-3 rounded-xl font-semibold text-lg"
+            >
+              Falar com Corretor
+            </motion.a>
           </motion.div>
         )}
       </AnimatePresence>
@@ -149,10 +127,10 @@ export function Header() {
 
 function LogoIcon() {
   return (
-    <svg width="32" height="32" viewBox="0 0 38 38" fill="none">
+    <svg width="34" height="34" viewBox="0 0 38 38" fill="none">
       <polygon points="19,4 34,20 19,28 4,20" fill="none" stroke="#C9A84C" strokeWidth="1.5"/>
-      <polygon points="19,10 29,20 19,25 9,20" fill="#C9A84C" opacity=".2"/>
-      <line x1="19" y1="4" x2="19" y2="34" stroke="#C9A84C" strokeWidth="1" opacity=".3"/>
+      <polygon points="19,10 29,20 19,25 9,20" fill="#C9A84C" opacity=".25"/>
+      <line x1="19" y1="4" x2="19" y2="34" stroke="#C9A84C" strokeWidth="1" opacity=".4"/>
     </svg>
   )
 }

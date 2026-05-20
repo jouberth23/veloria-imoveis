@@ -18,36 +18,33 @@ export function Servicos() {
   const inView = useInView(ref, { once: true, margin: '-80px' })
 
   return (
-    <section id="servicos" className="py-28 bg-card border-y border-white/5" ref={ref}>
-      <div className="max-w-7xl mx-auto px-6 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-[380px_1fr] gap-16 items-start">
+    <section id="servicos" className="py-28 bg-card" ref={ref}>
+      <div className="max-w-7xl mx-auto px-6">
+        <div className="grid grid-cols-1 lg:grid-cols-[360px_1fr] gap-16 items-start">
 
-          {/* Left sticky column */}
+          {/* Sticky left column */}
           <motion.div
             className="lg:sticky lg:top-28"
             initial={{ opacity: 0, x: -24 }}
             animate={inView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 0.7 }}
+            transition={{ duration: 0.6 }}
           >
-            <p className="text-gold text-[0.7rem] font-semibold tracking-[0.2em] uppercase mb-3">
-              O que Oferecemos
-            </p>
-            <h2 className="font-serif leading-tight mb-5" style={{ fontSize: 'clamp(1.8rem, 3.5vw, 2.8rem)' }}>
-              Soluções completas para o{' '}
-              <span className="text-gold">seu imóvel</span>
+            <span className="text-gold text-xs font-semibold tracking-widest uppercase">O que Oferecemos</span>
+            <h2 className="font-serif text-[clamp(1.8rem,3.5vw,2.8rem)] mt-3 mb-5">
+              Soluções completas para o <span className="text-gold">seu imóvel</span>
             </h2>
             <p className="text-muted text-sm leading-relaxed">
               Do primeiro contato ao pós-venda, cuidamos de cada detalhe para você ter a melhor experiência imobiliária em BH.
             </p>
 
-            <div className="mt-10 pt-8 border-t border-white/5 flex gap-10">
+            <div className="mt-10 pt-8 border-t border-border flex gap-8">
               <div>
                 <div className="font-serif text-3xl text-gold leading-none">6</div>
-                <div className="text-muted text-[0.68rem] mt-1.5 tracking-widest uppercase">Serviços</div>
+                <div className="text-muted text-xs mt-1.5 tracking-wide">Serviços</div>
               </div>
               <div>
                 <div className="font-serif text-3xl text-gold leading-none">15+</div>
-                <div className="text-muted text-[0.68rem] mt-1.5 tracking-widest uppercase">Anos</div>
+                <div className="text-muted text-xs mt-1.5 tracking-wide">Anos de experiência</div>
               </div>
             </div>
           </motion.div>
@@ -59,31 +56,18 @@ export function Servicos() {
                 key={servico.id}
                 initial={{ opacity: 0, y: 28 }}
                 animate={inView ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: 0.6, delay: 0.1 + i * 0.08 }}
-                className="group relative bg-deep/60 border border-white/5 rounded-2xl p-7 hover:border-gold/25 hover:bg-gold/5 hover:-translate-y-0.5 hover:shadow-[0_16px_40px_rgba(0,0,0,0.4)] transition-all duration-300 overflow-hidden"
+                transition={{ duration: 0.55, delay: 0.1 + i * 0.08 }}
+                className="group bg-deep/60 border border-border rounded-2xl p-7 hover:bg-gold/5 hover:border-gold/30 hover:-translate-y-0.5 transition-all duration-300"
               >
-                {/* Accent bar on left */}
-                <div className="absolute left-0 top-5 bottom-5 w-0.5 bg-gold/0 group-hover:bg-gold/50 rounded-full transition-colors duration-300" />
-
-                {/* Number */}
-                <div className="absolute top-5 right-5 font-serif text-[0.68rem] text-off-white/15 group-hover:text-gold/30 transition-colors duration-300">
-                  {String(i + 1).padStart(2, '0')}
-                </div>
-
                 <div className="flex items-start gap-4">
-                  <div
-                    className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300 border border-gold/15 group-hover:border-gold/30"
-                    style={{ background: 'linear-gradient(135deg, rgba(201,168,76,0.14), rgba(201,168,76,0.04))' }}
-                  >
-                    <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" strokeWidth="1.5">
+                  <div className="w-12 h-12 bg-gold/10 border border-gold/20 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:bg-gold/18 transition-colors">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" strokeWidth="1.5">
                       {SVG_PATHS[servico.icon]}
                     </svg>
                   </div>
                   <div>
-                    <h4 className="font-serif text-[0.98rem] mb-2 group-hover:text-gold transition-colors duration-200">
-                      {servico.titulo}
-                    </h4>
-                    <p className="text-muted text-[0.78rem] leading-relaxed">{servico.descricao}</p>
+                    <h4 className="font-serif text-[1rem] mb-2 group-hover:text-gold transition-colors">{servico.titulo}</h4>
+                    <p className="text-muted text-xs leading-relaxed">{servico.descricao}</p>
                   </div>
                 </div>
               </motion.div>

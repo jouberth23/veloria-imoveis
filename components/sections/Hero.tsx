@@ -78,6 +78,9 @@ export function Hero() {
         </div>
       </div>
 
+      {/* Bottom section blend */}
+      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-deep to-transparent pointer-events-none z-[5]" />
+
       {/* Scroll indicator */}
       <motion.div
         className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 z-10"

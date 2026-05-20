@@ -88,8 +88,8 @@ export function Sobre() {
               transition={{ duration: 0.6, delay: 0.45 }}
             >
               {EMPRESA.numeros.map(n => (
-                <div key={n.label} className="bg-card border border-border rounded-xl p-5 hover:border-gold/30 transition-colors">
-                  <div className="font-serif text-[2rem] text-gold leading-none">{n.valor}</div>
+                <div key={n.label} className="card-gold-top bg-card border border-border rounded-xl p-5 hover:border-gold/30 transition-colors">
+                  <div className="font-serif text-[2.4rem] text-gold leading-none">{n.valor}</div>
                   <div className="text-muted text-xs mt-2 tracking-wide">{n.label}</div>
                 </div>
               ))}

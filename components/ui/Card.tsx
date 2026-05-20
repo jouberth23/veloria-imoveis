@@ -12,7 +12,7 @@ export function Card({ imovel }: Props) {
   return (
     <Link
       href={`/imovel/${imovel.slug}`}
-      className="group block bg-card border border-border rounded-2xl overflow-hidden hover:-translate-y-2 hover:shadow-[0_28px_60px_rgba(0,0,0,.6)] hover:border-gold/40 transition-all duration-300"
+      className="card-gold-top group block bg-card border border-border rounded-2xl overflow-hidden hover:-translate-y-2 hover:shadow-[0_28px_60px_rgba(0,0,0,.6)] hover:border-gold/40 transition-all duration-300"
     >
       <div className="relative h-56 overflow-hidden bg-card-gradient">
         {imovel.imagem ? (

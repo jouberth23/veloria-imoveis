@@ -57,4 +57,31 @@
   .gold-glow {
     box-shadow: 0 0 40px rgba(201, 168, 76, 0.15);
   }
+
+  .card-gold-top {
+    position: relative;
+  }
+  .card-gold-top::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent 0%, rgba(201,168,76,0.7) 50%, transparent 100%);
+    opacity: 0;
+    transition: opacity 0.35s ease;
+    z-index: 10;
+    border-radius: 16px 16px 0 0;
+  }
+  .card-gold-top:hover::before {
+    opacity: 1;
+  }
 }
+
+/* Custom scrollbar */
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: #09111F; }
+::-webkit-scrollbar-thumb { background: rgba(201,168,76,0.35); border-radius: 10px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(201,168,76,0.6); }
+
+/* Text selection */
+::selection { background: rgba(201,168,76,0.22); color: #F5F0E8; }

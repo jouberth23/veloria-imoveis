@@ -17,7 +17,8 @@ const SERVICE_LINKS = [
 
 export function Footer() {
   return (
-    <footer className="bg-[#060E1A] border-t border-border pt-18 pb-8">
+    <footer className="bg-[#060E1A] pt-18 pb-8">
+      <div className="h-px bg-gradient-to-r from-transparent via-gold/30 to-transparent" />
       <div className="max-w-7xl mx-auto px-6">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-14 pt-10">
           <div>

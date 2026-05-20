@@ -28,6 +28,7 @@ export function Depoimentos() {
           <h2 className="font-serif text-[clamp(1.8rem,3.5vw,2.8rem)] mt-2">
             O que dizem sobre <span className="text-gold">a Velória</span>
           </h2>
+          <div className="mt-3 mx-auto w-14 h-0.5 bg-gradient-to-r from-transparent via-gold to-transparent" />
           <p className="text-muted text-sm mt-3 max-w-md mx-auto">
             A confiança dos nossos clientes é o nosso maior patrimônio.
           </p>
@@ -40,7 +41,7 @@ export function Depoimentos() {
               initial={{ opacity: 0, y: 32 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.6, delay: i * 0.12 }}
-              className="relative bg-card border border-border rounded-2xl p-8 hover:border-gold/30 transition-all duration-300 group hover:-translate-y-1"
+              className="card-gold-top relative bg-card border border-border rounded-2xl p-8 hover:border-gold/30 transition-all duration-300 group hover:-translate-y-1"
             >
               {/* Big quote mark */}
               <span className="absolute top-5 right-6 font-serif text-8xl text-gold/8 leading-none select-none group-hover:text-gold/13 transition-colors">"</span>
@@ -48,7 +49,7 @@ export function Depoimentos() {
               {/* Stars */}
               <div className="flex gap-1 mb-5">
                 {Array.from({ length: dep.estrelas }).map((_, j) => (
-                  <svg key={j} width="14" height="14" viewBox="0 0 24 24" fill="#C9A84C">
+                  <svg key={j} width="15" height="15" viewBox="0 0 24 24" fill="#C9A84C">
                     <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
                   </svg>
                 ))}

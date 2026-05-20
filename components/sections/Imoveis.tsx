@@ -25,6 +25,7 @@ export function Imoveis() {
             <h2 className="font-serif text-[clamp(1.8rem,3.5vw,2.8rem)] mt-2 mb-2">
               Imóveis em <span className="text-gold">Destaque</span>
             </h2>
+            <div className="mt-3 w-14 h-0.5 bg-gradient-to-r from-gold via-gold/60 to-transparent" />
             <p className="text-muted text-sm max-w-md">
               Curadoria exclusiva dos melhores imóveis disponíveis em Belo Horizonte.
             </p>

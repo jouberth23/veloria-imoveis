@@ -6,11 +6,10 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { WHATSAPP_URL } from '@/lib/constants'
 
 const NAV_LINKS = [
-  { href: '/',          label: 'Início' },
-  { href: '/imoveis',   label: 'Imóveis' },
+  { href: '/#imoveis',  label: 'Imóveis' },
   { href: '/#sobre',    label: 'Sobre' },
   { href: '/#servicos', label: 'Serviços' },
-  { href: '/#cta',      label: 'Contato' },
+  { href: '/imoveis',   label: 'Portfólio' },
 ]
 
 export function Header() {
@@ -18,7 +17,7 @@ export function Header() {
   const [menuOpen, setMenuOpen] = useState(false)
 
   useEffect(() => {
-    const handler = () => setScrolled(window.scrollY > 40)
+    const handler = () => setScrolled(window.scrollY > 48)
     window.addEventListener('scroll', handler, { passive: true })
     return () => window.removeEventListener('scroll', handler)
   }, [])
@@ -26,112 +25,133 @@ export function Header() {
   return (
     <>
       <header
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
           scrolled
-            ? 'bg-deep/80 backdrop-blur-md shadow-[0_2px_32px_rgba(0,0,0,.4)] border-b border-gold/10 py-3'
-            : 'py-5'
+            ? 'bg-deep/85 backdrop-blur-lg border-b border-white/6 py-3.5'
+            : 'py-6'
         }`}
       >
-        <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-2.5">
-            <LogoIcon />
-            <span className="font-serif text-[1.25rem] tracking-wide">
+        <div className="max-w-7xl mx-auto px-6 lg:px-10 flex items-center justify-between">
+
+          {/* Logo */}
+          <Link href="/" className="flex items-center gap-2.5 group">
+            <svg width="32" height="32" viewBox="0 0 38 38" fill="none" className="group-hover:rotate-45 transition-transform duration-500">
+              <polygon points="19,4 34,20 19,28 4,20" fill="none" stroke="#C9A84C" strokeWidth="1.5"/>
+              <polygon points="19,10 29,20 19,25 9,20" fill="#C9A84C" opacity=".3"/>
+              <line x1="19" y1="4" x2="19" y2="34" stroke="#C9A84C" strokeWidth="1" opacity=".4"/>
+            </svg>
+            <span className="font-serif text-[1.2rem] tracking-wide">
               Velória <span className="text-gold">Imóveis</span>
             </span>
           </Link>
 
+          {/* Desktop nav */}
           <nav className="hidden md:flex items-center gap-8">
             {NAV_LINKS.map(link => (
               <Link
                 key={link.href}
                 href={link.href}
-                className="text-sm font-medium text-muted hover:text-off-white transition-colors relative group"
+                className="text-[0.8rem] font-medium text-off-white/55 hover:text-off-white transition-colors duration-200 tracking-wide"
               >
                 {link.label}
-                <span className="absolute -bottom-0.5 left-0 w-0 h-px bg-gold group-hover:w-full transition-all duration-300" />
               </Link>
             ))}
           </nav>
 
-          <div className="hidden md:flex items-center gap-4">
+          {/* Desktop CTA */}
+          <div className="hidden md:block">
             <a
               href={WHATSAPP_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-2 bg-gold text-deep text-sm font-semibold px-5 py-2.5 rounded-lg hover:bg-gold-light transition-colors"
+              className="inline-flex items-center gap-2 bg-gold text-deep text-[0.8rem] font-semibold px-5 py-2.5 rounded-lg hover:bg-gold-light transition-colors"
             >
-              <WhatsAppIcon size={15} />
+              <WhatsAppIcon size={14} />
               Falar com Corretor
             </a>
           </div>
 
+          {/* Mobile hamburger */}
           <button
             onClick={() => setMenuOpen(true)}
-            className="md:hidden flex flex-col gap-1.5 p-1"
+            className="md:hidden flex flex-col gap-[5px] p-1.5"
             aria-label="Abrir menu"
           >
-            <span className="w-6 h-0.5 bg-off-white rounded" />
-            <span className="w-6 h-0.5 bg-off-white rounded" />
-            <span className="w-4 h-0.5 bg-off-white rounded" />
+            <span className="w-5 h-0.5 bg-off-white/80 rounded" />
+            <span className="w-5 h-0.5 bg-off-white/80 rounded" />
+            <span className="w-3 h-0.5 bg-gold rounded" />
           </button>
         </div>
       </header>
 
+      {/* Mobile menu */}
       <AnimatePresence>
         {menuOpen && (
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[60] bg-deep/97 flex flex-col items-center justify-center gap-8"
+            initial={{ x: '100%' }}
+            animate={{ x: 0 }}
+            exit={{ x: '100%' }}
+            transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+            className="fixed inset-0 z-[60] bg-deep flex flex-col px-8 py-10"
           >
-            <button
-              onClick={() => setMenuOpen(false)}
-              className="absolute top-6 right-6 text-muted hover:text-off-white text-2xl"
-            >
-              ✕
-            </button>
-            {NAV_LINKS.map((link, i) => (
-              <motion.div
-                key={link.href}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: i * 0.08 }}
+            {/* Close + logo row */}
+            <div className="flex items-center justify-between mb-16">
+              <span className="font-serif text-lg">
+                Velória <span className="text-gold">Imóveis</span>
+              </span>
+              <button
+                onClick={() => setMenuOpen(false)}
+                className="w-10 h-10 border border-border rounded-full flex items-center justify-center text-muted hover:text-off-white hover:border-off-white/20 transition-colors"
+                aria-label="Fechar menu"
               >
-                <Link
-                  href={link.href}
-                  onClick={() => setMenuOpen(false)}
-                  className="font-serif text-3xl text-off-white hover:text-gold transition-colors"
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M18 6L6 18M6 6l12 12"/>
+                </svg>
+              </button>
+            </div>
+
+            {/* Nav links */}
+            <nav className="flex flex-col gap-1 flex-1">
+              {NAV_LINKS.map((link, i) => (
+                <motion.div
+                  key={link.href}
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.1 + i * 0.06 }}
                 >
-                  {link.label}
-                </Link>
-              </motion.div>
-            ))}
+                  <Link
+                    href={link.href}
+                    onClick={() => setMenuOpen(false)}
+                    className="flex items-center gap-4 py-4 border-b border-border/50 group"
+                  >
+                    <span className="text-gold/30 font-serif text-sm group-hover:text-gold/60 transition-colors">
+                      {String(i + 1).padStart(2, '0')}
+                    </span>
+                    <span className="font-serif text-2xl text-off-white/80 group-hover:text-off-white transition-colors">
+                      {link.label}
+                    </span>
+                  </Link>
+                </motion.div>
+              ))}
+            </nav>
+
+            {/* Footer CTA */}
             <motion.a
               href={WHATSAPP_URL}
               target="_blank"
               rel="noopener noreferrer"
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: NAV_LINKS.length * 0.08 }}
-              className="mt-4 bg-[#25D366] text-white px-8 py-3 rounded-xl font-semibold text-lg"
+              transition={{ delay: 0.4 }}
+              className="flex items-center justify-center gap-2.5 bg-[#25D366] text-white font-semibold py-4 rounded-xl text-sm mt-8"
             >
-              Falar com Corretor
+              <WhatsAppIcon size={17} />
+              Falar no WhatsApp
             </motion.a>
           </motion.div>
         )}
       </AnimatePresence>
     </>
-  )
-}
-
-function LogoIcon() {
-  return (
-    <svg width="34" height="34" viewBox="0 0 38 38" fill="none">
-      <polygon points="19,4 34,20 19,28 4,20" fill="none" stroke="#C9A84C" strokeWidth="1.5"/>
-      <polygon points="19,10 29,20 19,25 9,20" fill="#C9A84C" opacity=".25"/>
-      <line x1="19" y1="4" x2="19" y2="34" stroke="#C9A84C" strokeWidth="1" opacity=".4"/>
-    </svg>
   )
 }
 

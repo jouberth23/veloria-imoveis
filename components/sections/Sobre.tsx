@@ -90,7 +90,8 @@ export function Sobre() {
               {EMPRESA.numeros.map(n => (
                 <div key={n.label} className="card-gold-top bg-card border border-border rounded-xl p-5 hover:border-gold/30 transition-colors">
                   <div className="font-serif text-[2.4rem] text-gold leading-none">{n.valor}</div>
-                  <div className="text-muted text-xs mt-2 tracking-wide">{n.label}</div>
+                  <div className="mt-2 mb-2 h-px w-8 bg-gradient-to-r from-gold/60 to-transparent" />
+                  <div className="text-muted text-xs tracking-wide">{n.label}</div>
                 </div>
               ))}
             </motion.div>

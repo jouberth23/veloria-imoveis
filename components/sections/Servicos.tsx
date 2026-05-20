@@ -57,8 +57,11 @@ export function Servicos() {
                 initial={{ opacity: 0, y: 28 }}
                 animate={inView ? { opacity: 1, y: 0 } : {}}
                 transition={{ duration: 0.55, delay: 0.1 + i * 0.08 }}
-                className="card-gold-top group bg-deep/60 border border-border rounded-2xl p-7 hover:bg-gold/5 hover:border-gold/30 hover:-translate-y-0.5 transition-all duration-300"
+                className="card-gold-top relative group bg-deep/60 border border-border rounded-2xl p-7 hover:bg-gold/5 hover:border-gold/30 hover:-translate-y-0.5 transition-all duration-300"
               >
+                <span className="absolute top-5 right-6 font-serif text-4xl text-gold/8 leading-none pointer-events-none select-none group-hover:text-gold/15 transition-colors">
+                  {String(i + 1).padStart(2, '0')}
+                </span>
                 <div className="flex items-start gap-4">
                   <div className="w-14 h-14 bg-gold/10 border border-gold/20 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:bg-gold/18 transition-colors">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" strokeWidth="1.5">

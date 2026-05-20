@@ -36,12 +36,18 @@ export function Card({ imovel }: Props) {
 
         <div className="absolute inset-0 bg-gradient-to-t from-deep/80 via-deep/20 to-transparent" />
 
-        <div className="absolute top-3.5 left-3.5">
+        <div className="absolute inset-0 z-[5] flex items-center justify-center bg-deep/0 group-hover:bg-deep/35 transition-colors duration-500">
+          <span className="bg-card/90 border border-gold/50 text-gold text-[0.72rem] font-semibold px-5 py-2.5 rounded-full opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 transition-all duration-300 pointer-events-none select-none">
+            Ver Detalhes →
+          </span>
+        </div>
+
+        <div className="absolute top-3.5 left-3.5 z-10">
           <Badge type={imovel.badge} />
         </div>
         <button
           onClick={e => e.preventDefault()}
-          className="absolute top-3.5 right-3.5 w-9 h-9 bg-deep/60 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-gold/30 transition-colors border border-white/10"
+          className="absolute top-3.5 right-3.5 z-10 w-9 h-9 bg-deep/60 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-gold/30 transition-colors border border-white/10"
           aria-label="Favoritar"
         >
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" strokeWidth="2">
@@ -49,7 +55,7 @@ export function Card({ imovel }: Props) {
           </svg>
         </button>
 
-        <div className="absolute bottom-3.5 left-4">
+        <div className="absolute bottom-3.5 left-4 z-10">
           <span className="font-serif text-[1.25rem] text-white font-semibold drop-shadow-lg">
             {formatPreco(imovel)}
           </span>

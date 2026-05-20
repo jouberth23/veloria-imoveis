@@ -15,6 +15,11 @@ const CATEGORY_IMAGES: Record<string, string> = {
   launch:    'https://images.unsplash.com/photo-1486325212027-8081e485255e?w=400&q=80',
 }
 
+const COUNTS: Record<string, string> = {
+  apartment: '142', house: '87', penthouse: '23',
+  terrain: '45', commercial: '38', launch: '12',
+}
+
 const ICONS: Record<string, React.ReactNode> = {
   apartment: <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>,
   house:     <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.5"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>,
@@ -73,6 +78,7 @@ export function Categorias() {
                     {ICONS[cat.icon]}
                   </div>
                   <span className="text-[0.8rem] font-semibold text-white text-center leading-tight">{cat.nome}</span>
+                  <span className="text-[0.62rem] text-gold/70 mt-0.5">{COUNTS[cat.icon]} imóveis</span>
                 </div>
               </Link>
             </motion.div>

@@ -10,7 +10,10 @@ export function Sobre() {
   const inView = useInView(ref, { once: true, margin: '-80px' })
 
   return (
-    <section id="sobre" className="py-28 bg-deep" ref={ref}>
+    <section id="sobre" className="py-28 bg-deep relative" ref={ref}>
+      {/* Top line */}
+      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-gold/20 to-transparent" />
+
       <div className="max-w-7xl mx-auto px-6">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
 
@@ -21,25 +24,40 @@ export function Sobre() {
             transition={{ duration: 0.7 }}
             className="relative"
           >
-            <div className="relative aspect-[4/5] max-h-[540px] rounded-2xl overflow-hidden border border-border">
+            <div className="relative aspect-[4/5] max-h-[540px] rounded-2xl overflow-hidden border border-border shadow-[0_32px_80px_rgba(0,0,0,0.5)]">
               <Image
                 src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=800&q=80"
                 alt="Equipe Velória Imóveis"
                 fill
                 className="object-cover"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-deep/55 via-transparent to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-deep/60 via-transparent to-transparent" />
+              {/* Gold overlay tint */}
+              <div className="absolute inset-0 bg-gradient-to-br from-gold/5 via-transparent to-transparent" />
             </div>
 
             {/* Floating badge – years */}
-            <div className="absolute -bottom-5 -right-5 bg-gold text-deep px-7 py-5 rounded-2xl text-center shadow-2xl z-10">
+            <motion.div
+              className="absolute -bottom-5 -right-5 bg-gold text-deep px-7 py-5 rounded-2xl text-center z-10"
+              style={{ boxShadow: '0 16px 48px rgba(201,168,76,0.35), 0 4px 16px rgba(0,0,0,0.4)' }}
+              animate={{ y: [0, -4, 0] }}
+              transition={{ repeat: Infinity, duration: 4, ease: 'easeInOut' }}
+            >
               <div className="font-serif text-4xl font-bold leading-none">15+</div>
               <div className="text-[0.65rem] font-bold uppercase tracking-widest mt-1.5">Anos no Mercado</div>
-            </div>
+            </motion.div>
 
             {/* Floating badge – CRECI */}
-            <div className="absolute top-6 -left-5 bg-card border border-border px-5 py-4 rounded-xl shadow-xl flex items-center gap-3 z-10">
-              <div className="w-10 h-10 bg-gold/15 rounded-full flex items-center justify-center flex-shrink-0">
+            <motion.div
+              className="absolute top-6 -left-5 bg-card/95 backdrop-blur-sm border border-border px-5 py-4 rounded-xl flex items-center gap-3 z-10"
+              style={{ boxShadow: '0 12px_36px rgba(0,0,0,0.5)' }}
+              animate={{ y: [0, -5, 0] }}
+              transition={{ repeat: Infinity, duration: 5, ease: 'easeInOut', delay: 1 }}
+            >
+              <div
+                className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0"
+                style={{ background: 'linear-gradient(135deg, rgba(201,168,76,0.2), rgba(201,168,76,0.08))' }}
+              >
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" strokeWidth="2">
                   <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
                 </svg>
@@ -48,7 +66,13 @@ export function Sobre() {
                 <div className="font-serif text-base text-gold leading-none">CRECI-MG</div>
                 <div className="text-muted text-[0.65rem] tracking-wide mt-0.5">Certificado Oficial</div>
               </div>
-            </div>
+            </motion.div>
+
+            {/* Decorative corner glow */}
+            <div
+              className="absolute -bottom-10 -right-10 w-40 h-40 rounded-full pointer-events-none"
+              style={{ background: 'radial-gradient(circle, rgba(201,168,76,.12) 0%, transparent 70%)' }}
+            />
           </motion.div>
 
           {/* Text column */}
@@ -88,9 +112,17 @@ export function Sobre() {
               transition={{ duration: 0.6, delay: 0.45 }}
             >
               {EMPRESA.numeros.map(n => (
-                <div key={n.label} className="bg-card border border-border rounded-xl p-5 hover:border-gold/30 transition-colors">
+                <div
+                  key={n.label}
+                  className="group bg-card border border-border rounded-xl p-5 hover:border-gold/35 transition-all duration-300 hover:-translate-y-0.5 relative overflow-hidden"
+                  style={{ boxShadow: '0 2px 8px rgba(0,0,0,0.25)' }}
+                  onMouseEnter={e => (e.currentTarget.style.boxShadow = '0 12px 32px rgba(0,0,0,0.4)')}
+                  onMouseLeave={e => (e.currentTarget.style.boxShadow = '0 2px 8px rgba(0,0,0,0.25)')}
+                >
                   <div className="font-serif text-[2rem] text-gold leading-none">{n.valor}</div>
                   <div className="text-muted text-xs mt-2 tracking-wide">{n.label}</div>
+                  {/* Corner glow on hover */}
+                  <div className="absolute top-0 right-0 w-16 h-16 bg-gold/0 group-hover:bg-gold/6 transition-colors duration-300 rounded-bl-3xl" />
                 </div>
               ))}
             </motion.div>

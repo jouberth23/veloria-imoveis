@@ -19,9 +19,12 @@ export function CTA() {
   }
 
   return (
-    <section id="cta" className="py-24 bg-deep" ref={ref}>
+    <section id="cta" className="py-24 bg-deep relative" ref={ref}>
+      {/* Top separator */}
+      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-gold/25 to-transparent" />
+
       <div className="max-w-7xl mx-auto px-6">
-        <div className="relative rounded-2xl overflow-hidden border border-border">
+        <div className="relative rounded-3xl overflow-hidden border border-border">
 
           {/* Background image */}
           <div className="absolute inset-0">
@@ -31,16 +34,24 @@ export function CTA() {
               fill
               className="object-cover object-center"
             />
-            <div className="absolute inset-0 bg-gradient-to-r from-deep/97 via-deep/92 to-deep/75" />
+            <div className="absolute inset-0 bg-gradient-to-r from-deep/98 via-deep/92 to-deep/80" />
+            <div className="absolute inset-0 bg-gradient-to-t from-deep/40 via-transparent to-transparent" />
           </div>
 
-          {/* Gold glow */}
+          {/* Gold glows */}
           <div
-            className="absolute top-0 right-0 w-96 h-96 pointer-events-none"
+            className="absolute top-0 left-0 w-80 h-80 pointer-events-none"
             style={{ background: 'radial-gradient(circle, rgba(201,168,76,.12) 0%, transparent 70%)' }}
           />
+          <div
+            className="absolute bottom-0 right-0 w-96 h-96 pointer-events-none"
+            style={{ background: 'radial-gradient(circle, rgba(201,168,76,.08) 0%, transparent 70%)' }}
+          />
 
-          <div className="relative grid grid-cols-1 lg:grid-cols-2 gap-12 p-12 lg:p-16">
+          {/* Grid overlay */}
+          <div className="absolute inset-0 bg-grid opacity-20 pointer-events-none" />
+
+          <div className="relative grid grid-cols-1 lg:grid-cols-2 gap-12 p-10 lg:p-16">
 
             {/* Left */}
             <motion.div
@@ -49,8 +60,14 @@ export function CTA() {
               transition={{ duration: 0.7 }}
               className="flex flex-col justify-center"
             >
-              <span className="text-gold text-xs font-semibold tracking-widest uppercase">Pronto para começar?</span>
-              <h2 className="font-serif text-[clamp(1.7rem,3vw,2.6rem)] mt-3 mb-4">
+              <motion.div
+                className="inline-flex items-center gap-2 bg-gold/15 border border-gold/30 px-4 py-1.5 rounded-full text-gold text-xs font-semibold tracking-widest uppercase mb-5 w-fit"
+              >
+                <span className="w-1.5 h-1.5 bg-gold rounded-full animate-pulse" />
+                Pronto para começar?
+              </motion.div>
+
+              <h2 className="font-serif text-[clamp(1.7rem,3vw,2.7rem)] mb-4 leading-tight">
                 Seu próximo imóvel <span className="text-gold">começa aqui.</span>
               </h2>
               <p className="text-muted text-sm leading-relaxed mb-8 max-w-md">
@@ -62,7 +79,8 @@ export function CTA() {
                   href={WHATSAPP_URL}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-2.5 bg-[#25D366] text-white font-semibold text-sm px-6 py-3 rounded-xl hover:brightness-110 transition-all"
+                  className="flex items-center gap-2.5 text-white font-semibold text-sm px-6 py-3 rounded-xl hover:brightness-110 transition-all"
+                  style={{ background: 'linear-gradient(135deg, #25D366, #1aad52)', boxShadow: '0 4px 20px rgba(37,211,102,0.25)' }}
                 >
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
@@ -81,10 +99,12 @@ export function CTA() {
               {/* Trust indicators */}
               <div className="flex flex-wrap gap-5 text-xs text-muted">
                 {['Resposta em até 1h', 'Sem compromisso', 'Corretor exclusivo'].map(item => (
-                  <div key={item} className="flex items-center gap-1.5">
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" strokeWidth="2.5">
-                      <polyline points="20 6 9 17 4 12"/>
-                    </svg>
+                  <div key={item} className="flex items-center gap-2">
+                    <div className="w-4 h-4 bg-gold/15 border border-gold/30 rounded-full flex items-center justify-center flex-shrink-0">
+                      <svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" strokeWidth="3">
+                        <polyline points="20 6 9 17 4 12"/>
+                      </svg>
+                    </div>
                     {item}
                   </div>
                 ))}
@@ -97,9 +117,13 @@ export function CTA() {
               initial={{ opacity: 0, x: 24 }}
               animate={inView ? { opacity: 1, x: 0 } : {}}
               transition={{ duration: 0.7, delay: 0.15 }}
-              className="flex flex-col gap-4 bg-deep/50 backdrop-blur-sm rounded-xl p-7 border border-border"
+              className="flex flex-col gap-4 bg-deep/60 backdrop-blur-md rounded-2xl p-7 border border-border"
+              style={{ boxShadow: '0 8px 40px rgba(0,0,0,0.4)' }}
             >
-              <h3 className="font-serif text-lg mb-1">Solicite Atendimento</h3>
+              <div className="mb-1">
+                <h3 className="font-serif text-lg">Solicite Atendimento</h3>
+                <p className="text-muted text-xs mt-1">Retorno garantido em até 1 hora útil</p>
+              </div>
 
               <FormField label="Nome Completo">
                 <input
@@ -143,9 +167,10 @@ export function CTA() {
 
               <button
                 type="submit"
-                className="w-full bg-gold text-deep font-bold py-3.5 rounded-xl hover:bg-gold-light transition-colors tracking-wide text-sm mt-1"
+                className="w-full text-deep font-bold py-3.5 rounded-xl transition-all tracking-wide text-sm mt-1 hover:brightness-105 active:scale-[0.99]"
+                style={{ background: sent ? '#22c55e' : 'linear-gradient(135deg, #C9A84C, #E2C06A)', boxShadow: '0 4px 20px rgba(201,168,76,0.25)' }}
               >
-                {sent ? '✓ Mensagem enviada! Em breve entraremos em contato.' : 'Solicitar Atendimento →'}
+                {sent ? '✓ Mensagem enviada! Entraremos em contato em breve.' : 'Solicitar Atendimento →'}
               </button>
             </motion.form>
           </div>
@@ -158,7 +183,7 @@ export function CTA() {
 function FormField({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <div className="flex flex-col gap-1.5">
-      <label className="text-[0.7rem] font-semibold tracking-widest uppercase text-gold">{label}</label>
+      <label className="text-[0.68rem] font-bold tracking-widest uppercase text-gold/80">{label}</label>
       {children}
     </div>
   )

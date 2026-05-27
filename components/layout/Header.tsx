@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { usePathname } from 'next/navigation'
 import Link from 'next/link'
 import { motion, AnimatePresence } from 'framer-motion'
 import { WHATSAPP_URL } from '@/lib/constants'
@@ -17,9 +18,12 @@ const NAV_LINKS = [
 ]
 
 export function Header({ whatsappUrl }: HeaderProps) {
+  const pathname = usePathname()
   const waUrl = whatsappUrl || WHATSAPP_URL
   const [scrolled, setScrolled] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
+
+  if (pathname.startsWith('/admin')) return null
 
   useEffect(() => {
     const handler = () => setScrolled(window.scrollY > 48)

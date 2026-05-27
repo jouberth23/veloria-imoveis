@@ -1,6 +1,6 @@
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
-import { AdminSidebar } from '@/components/admin/AdminSidebar'
+import { AdminShell } from '@/components/admin/AdminShell'
 
 const ADMIN_COOKIE = 'veloria_admin'
 
@@ -18,10 +18,5 @@ export default async function AdminLayout({ children }: { children: React.ReactN
     redirect('/')
   }
 
-  return (
-    <div className="flex min-h-screen bg-deep text-off-white">
-      <AdminSidebar />
-      <main className="flex-1 overflow-auto">{children}</main>
-    </div>
-  )
+  return <AdminShell>{children}</AdminShell>
 }

@@ -10,9 +10,9 @@ export function Sobre() {
   const inView = useInView(ref, { once: true, margin: '-80px' })
 
   return (
-    <section id="sobre" className="py-28 bg-card" ref={ref}>
+    <section id="sobre" className="py-16 lg:py-28 bg-card" ref={ref}>
       <div className="max-w-7xl mx-auto px-6">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
 
           {/* Photo */}
           <motion.div
@@ -32,13 +32,13 @@ export function Sobre() {
             </div>
 
             {/* Years badge */}
-            <div className="absolute -bottom-6 -right-6 bg-gold text-deep px-7 py-5 rounded-2xl text-center shadow-[0_20px_48px_rgba(201,168,76,.25)] z-10">
-              <div className="font-serif text-4xl font-bold leading-none">15+</div>
+            <div className="absolute -bottom-4 -right-3 sm:-bottom-6 sm:-right-6 bg-gold text-deep px-5 py-4 sm:px-7 sm:py-5 rounded-2xl text-center shadow-[0_20px_48px_rgba(201,168,76,.25)] z-10">
+              <div className="font-serif text-3xl sm:text-4xl font-bold leading-none">15+</div>
               <div className="text-[0.6rem] font-bold uppercase tracking-widest mt-1.5">Anos no Mercado</div>
             </div>
 
             {/* CRECI badge */}
-            <div className="absolute top-6 -left-5 bg-deep border border-border px-5 py-4 rounded-xl shadow-xl flex items-center gap-3 z-10">
+            <div className="absolute top-4 -left-2 sm:top-6 sm:-left-5 bg-deep border border-border px-4 py-3 sm:px-5 sm:py-4 rounded-xl shadow-xl flex items-center gap-3 z-10">
               <div className="w-9 h-9 bg-gold/12 rounded-full flex items-center justify-center flex-shrink-0">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" strokeWidth="2">
                   <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>

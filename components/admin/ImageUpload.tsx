@@ -81,7 +81,7 @@ export function ImageUpload({ images, onChange }: Props) {
     <div className="space-y-3">
       {/* Existing images */}
       {(images.length > 0 || local.length > 0) && (
-        <div className="grid grid-cols-3 sm:grid-cols-4 gap-3">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
           {images.map((url) => (
             <div key={url} className="relative aspect-video rounded-lg overflow-hidden border border-border group">
               <Image src={url} alt="" fill className="object-cover" sizes="200px" />

@@ -163,7 +163,7 @@ export function VideoUpload({ videos, onChange }: Props) {
       </div>
 
       {/* URL (YouTube / Vimeo) */}
-      <div className="flex gap-2">
+      <div className="flex flex-col sm:flex-row gap-2">
         <input
           type="url"
           value={urlInput}
@@ -175,7 +175,7 @@ export function VideoUpload({ videos, onChange }: Props) {
         <button
           type="button"
           onClick={addUrl}
-          className="px-4 py-2 bg-gold text-deep font-semibold rounded-lg text-sm hover:bg-gold-light transition-colors whitespace-nowrap"
+          className="px-4 py-2.5 bg-gold text-deep font-semibold rounded-lg text-sm hover:bg-gold-light transition-colors whitespace-nowrap"
         >
           + Adicionar URL
         </button>

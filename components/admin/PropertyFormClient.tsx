@@ -158,7 +158,7 @@ export function PropertyFormClient({ initialData }: Props) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="max-w-3xl space-y-8">
+    <form onSubmit={handleSubmit} className="max-w-3xl space-y-6 lg:space-y-8">
       {apiError && (
         <div className="bg-red-500/10 border border-red-500/30 rounded-lg px-4 py-3 text-red-400 text-sm flex items-center gap-2">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" className="flex-shrink-0">
@@ -183,7 +183,7 @@ export function PropertyFormClient({ initialData }: Props) {
             {errors.titulo && <p className="text-red-400 text-xs mt-1">{errors.titulo}</p>}
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
             <div>
               <label className="block text-muted text-xs mb-1.5 uppercase tracking-wider">Tipo *</label>
               <select
@@ -302,7 +302,7 @@ export function PropertyFormClient({ initialData }: Props) {
       {/* Características */}
       <div>
         <SectionTitle>Características</SectionTitle>
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
           {[
             { key: 'area' as const, label: 'Área (m²)', placeholder: '120' },
             { key: 'quartos' as const, label: 'Quartos', placeholder: '3' },

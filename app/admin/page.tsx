@@ -39,9 +39,9 @@ export default async function AdminPage() {
   }
 
   return (
-    <div className="p-6 lg:p-8 max-w-6xl">
+    <div className="p-4 sm:p-6 lg:p-8 max-w-6xl">
       {/* Header */}
-      <div className="flex items-center justify-between mb-8 flex-wrap gap-4">
+      <div className="flex items-center justify-between mb-6 sm:mb-8 flex-wrap gap-4">
         <div>
           <h1 className="font-serif text-2xl text-off-white">Imóveis</h1>
           <p className="text-muted text-sm mt-0.5">Gerencie o portfólio de imóveis</p>
@@ -59,7 +59,7 @@ export default async function AdminPage() {
 
       {/* Stats */}
       {properties.length > 0 && (
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 mb-6 sm:mb-8">
           <StatCard label="Total" value={stats.total} color="text-off-white" />
           <StatCard label="Ativos" value={stats.ativos} color="text-emerald-400" />
           <StatCard label="Venda" value={stats.venda} color="text-gold" />

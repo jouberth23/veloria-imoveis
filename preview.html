@@ -1,0 +1,1540 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Velória Imóveis — Alto Padrão em BH</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg-deep:   #09111F;
+      --bg-card:   #0D1826;
+      --bg-light:  #111E2F;
+      --gold:      #C9A84C;
+      --gold-light:#E2C06A;
+      --gold-dim:  #9A7A34;
+      --white:     #F5F0E8;
+      --gray:      #8A97A8;
+      --border:    rgba(201,168,76,.18);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg-deep);
+      color: var(--white);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    h1,h2,h3,h4 { font-family: 'Playfair Display', serif; line-height: 1.2; }
+
+    a { text-decoration: none; color: inherit; }
+
+    /* ── UTILITIES ─────────────────────────────────────── */
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+    .gold      { color: var(--gold); }
+    .section-label {
+      display: inline-block;
+      font-size: .72rem;
+      font-weight: 600;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 12px;
+    }
+    .section-title {
+      font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+      margin-bottom: 16px;
+    }
+    .section-sub {
+      color: var(--gray);
+      max-width: 520px;
+      font-size: .95rem;
+    }
+
+    /* ── ANIMATIONS ────────────────────────────────────── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(36px);
+      transition: opacity .7s ease, transform .7s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: none;
+    }
+    .reveal-d1 { transition-delay: .1s; }
+    .reveal-d2 { transition-delay: .2s; }
+    .reveal-d3 { transition-delay: .3s; }
+    .reveal-d4 { transition-delay: .4s; }
+    .reveal-d5 { transition-delay: .5s; }
+
+    /* ── NAVBAR ────────────────────────────────────────── */
+    #navbar {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      padding: 18px 0;
+      transition: background .4s, backdrop-filter .4s, padding .3s, box-shadow .3s;
+    }
+    #navbar.scrolled {
+      background: rgba(9,17,31,.82);
+      backdrop-filter: blur(14px);
+      padding: 12px 0;
+      box-shadow: 0 2px 32px rgba(0,0,0,.4);
+    }
+    .nav-inner {
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .nav-logo {
+      display: flex; align-items: center; gap: 10px;
+    }
+    .nav-logo-icon {
+      width: 38px; height: 38px;
+    }
+    .nav-logo-text {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.35rem;
+      letter-spacing: .04em;
+    }
+    .nav-logo-text span { color: var(--gold); }
+    .nav-links {
+      display: flex; gap: 32px; list-style: none;
+    }
+    .nav-links a {
+      font-size: .88rem;
+      font-weight: 500;
+      letter-spacing: .04em;
+      color: var(--gray);
+      transition: color .25s;
+      position: relative;
+    }
+    .nav-links a::after {
+      content: '';
+      position: absolute; bottom: -3px; left: 0; right: 100%;
+      height: 1px; background: var(--gold);
+      transition: right .3s;
+    }
+    .nav-links a:hover { color: var(--white); }
+    .nav-links a:hover::after { right: 0; }
+    .btn-wa {
+      display: flex; align-items: center; gap: 8px;
+      background: var(--gold);
+      color: var(--bg-deep);
+      font-weight: 600;
+      font-size: .83rem;
+      padding: 10px 20px;
+      border-radius: 6px;
+      letter-spacing: .03em;
+      transition: background .25s, transform .2s;
+    }
+    .btn-wa:hover { background: var(--gold-light); transform: translateY(-1px); }
+    .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
+    .hamburger span { width: 24px; height: 2px; background: var(--white); border-radius: 2px; transition: .3s; }
+
+    /* ── HERO ──────────────────────────────────────────── */
+    #hero {
+      min-height: 100vh;
+      display: flex; align-items: center;
+      background: linear-gradient(135deg, #09111F 0%, #0D1826 60%, #091522 100%);
+      position: relative;
+      overflow: hidden;
+      padding-top: 80px;
+    }
+    .hero-bg-pattern {
+      position: absolute; inset: 0;
+      background-image:
+        radial-gradient(circle at 70% 20%, rgba(201,168,76,.07) 0%, transparent 55%),
+        radial-gradient(circle at 15% 80%, rgba(201,168,76,.05) 0%, transparent 45%);
+    }
+    .hero-grid-line {
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(rgba(201,168,76,.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(201,168,76,.04) 1px, transparent 1px);
+      background-size: 60px 60px;
+    }
+    .hero-content {
+      position: relative; z-index: 2;
+      max-width: 760px;
+    }
+    .hero-tag {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(201,168,76,.12);
+      border: 1px solid var(--border);
+      padding: 6px 14px;
+      border-radius: 100px;
+      font-size: .78rem;
+      font-weight: 500;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 28px;
+    }
+    .hero-dot { width: 6px; height: 6px; background: var(--gold); border-radius: 50%; animation: pulse 2s infinite; }
+    @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.5;transform:scale(1.4)} }
+    .hero-title {
+      font-size: clamp(2.4rem, 5.5vw, 4rem);
+      margin-bottom: 22px;
+      line-height: 1.1;
+    }
+    .hero-title em { color: var(--gold); font-style: italic; }
+    .hero-sub {
+      font-size: 1.05rem;
+      color: var(--gray);
+      max-width: 520px;
+      margin-bottom: 44px;
+    }
+
+    /* Search bar */
+    .search-bar {
+      background: rgba(13,24,38,.9);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      align-items: flex-end;
+      backdrop-filter: blur(8px);
+    }
+    .search-field {
+      flex: 1 1 160px;
+      display: flex; flex-direction: column; gap: 6px;
+    }
+    .search-field label {
+      font-size: .72rem;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--gold);
+      font-weight: 600;
+    }
+    .search-field select,
+    .search-field input {
+      background: rgba(255,255,255,.05);
+      border: 1px solid rgba(255,255,255,.1);
+      border-radius: 7px;
+      color: var(--white);
+      padding: 10px 14px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: .9rem;
+      outline: none;
+      transition: border-color .25s;
+      -webkit-appearance: none;
+    }
+    .search-field select:focus,
+    .search-field input:focus { border-color: var(--gold); }
+    .search-field select option { background: #0D1826; }
+    .btn-search {
+      flex: 0 0 auto;
+      background: var(--gold);
+      color: var(--bg-deep);
+      border: none;
+      padding: 11px 28px;
+      border-radius: 7px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: .9rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex; align-items: center; gap: 8px;
+      transition: background .25s, transform .2s;
+      white-space: nowrap;
+    }
+    .btn-search:hover { background: var(--gold-light); transform: translateY(-1px); }
+
+    /* Stats */
+    .hero-stats {
+      display: flex; gap: 40px;
+      margin-top: 44px;
+      flex-wrap: wrap;
+    }
+    .stat {
+      display: flex; flex-direction: column; gap: 2px;
+      border-left: 2px solid var(--border);
+      padding-left: 20px;
+    }
+    .stat-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.9rem;
+      color: var(--gold);
+      line-height: 1;
+    }
+    .stat-label { font-size: .8rem; color: var(--gray); letter-spacing: .05em; }
+
+    /* ── IMOVEIS ───────────────────────────────────────── */
+    #imoveis { padding: 100px 0; }
+    .section-header {
+      display: flex; justify-content: space-between; align-items: flex-end;
+      margin-bottom: 52px;
+      flex-wrap: wrap; gap: 20px;
+    }
+    .btn-outline {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--gold);
+      padding: 10px 22px;
+      border-radius: 6px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: .86rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background .25s, border-color .25s, transform .2s;
+      letter-spacing: .03em;
+    }
+    .btn-outline:hover {
+      background: rgba(201,168,76,.1);
+      border-color: var(--gold);
+      transform: translateY(-1px);
+    }
+    .imoveis-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+    .imovel-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      overflow: hidden;
+      transition: transform .3s, box-shadow .3s, border-color .3s;
+      cursor: pointer;
+    }
+    .imovel-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 20px 48px rgba(0,0,0,.45);
+      border-color: rgba(201,168,76,.35);
+    }
+    .card-img {
+      height: 210px;
+      background: linear-gradient(135deg, #111E2F 0%, #162233 100%);
+      position: relative;
+      overflow: hidden;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .card-img::before {
+      content: '';
+      position: absolute; inset: 0;
+      background:
+        linear-gradient(135deg, rgba(201,168,76,.06) 0%, transparent 60%),
+        repeating-linear-gradient(45deg, rgba(255,255,255,.015) 0px, rgba(255,255,255,.015) 1px, transparent 1px, transparent 12px);
+    }
+    .card-img-icon { opacity: .15; }
+    .badge {
+      position: absolute; top: 14px; left: 14px;
+      padding: 4px 12px;
+      border-radius: 100px;
+      font-size: .72rem;
+      font-weight: 600;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+    .badge-venda   { background: var(--gold); color: var(--bg-deep); }
+    .badge-aluguel { background: rgba(74,144,226,.9); color: #fff; }
+    .badge-lanca   { background: rgba(46,204,113,.85); color: #fff; }
+    .card-fav {
+      position: absolute; top: 14px; right: 14px;
+      width: 32px; height: 32px;
+      background: rgba(9,17,31,.7);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      transition: background .25s;
+    }
+    .card-fav:hover { background: rgba(201,168,76,.25); }
+    .card-body { padding: 20px; }
+    .card-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.05rem;
+      margin-bottom: 4px;
+    }
+    .card-addr {
+      display: flex; align-items: center; gap: 5px;
+      font-size: .8rem; color: var(--gray);
+      margin-bottom: 14px;
+    }
+    .card-price {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.35rem;
+      color: var(--gold);
+      margin-bottom: 14px;
+    }
+    .card-price span { font-family: 'DM Sans', sans-serif; font-size: .8rem; color: var(--gray); }
+    .card-attrs {
+      display: flex; gap: 14px;
+      font-size: .78rem; color: var(--gray);
+      border-top: 1px solid var(--border);
+      padding-top: 12px;
+    }
+    .card-attr { display: flex; align-items: center; gap: 5px; }
+
+    /* ── CATEGORIAS ────────────────────────────────────── */
+    #categorias {
+      padding: 80px 0;
+      background: var(--bg-card);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+    .cat-grid {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 16px;
+      margin-top: 52px;
+    }
+    .cat-card {
+      background: rgba(9,17,31,.6);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 28px 16px;
+      text-align: center;
+      cursor: pointer;
+      transition: background .3s, border-color .3s, transform .3s;
+      display: flex; flex-direction: column; align-items: center; gap: 12px;
+    }
+    .cat-card:hover {
+      background: rgba(201,168,76,.1);
+      border-color: rgba(201,168,76,.4);
+      transform: translateY(-4px);
+    }
+    .cat-icon {
+      width: 52px; height: 52px;
+      background: rgba(201,168,76,.12);
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .cat-name { font-size: .85rem; font-weight: 500; }
+
+    /* ── SOBRE ─────────────────────────────────────────── */
+    #sobre { padding: 100px 0; }
+    .sobre-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 72px;
+      align-items: center;
+    }
+    .sobre-img {
+      height: 480px;
+      background: linear-gradient(135deg, #111E2F, #162233);
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      position: relative;
+      overflow: hidden;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .sobre-img::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 40%;
+      background: linear-gradient(transparent, rgba(9,17,31,.6));
+    }
+    .sobre-badge {
+      position: absolute;
+      bottom: 28px; right: 28px; z-index: 2;
+      background: var(--gold);
+      color: var(--bg-deep);
+      padding: 14px 22px;
+      border-radius: 10px;
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem;
+      font-weight: 700;
+      line-height: 1.1;
+      text-align: center;
+    }
+    .sobre-badge small { display: block; font-family: 'DM Sans', sans-serif; font-size: .7rem; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; }
+    .sobre-text p { color: var(--gray); font-size: .95rem; margin-bottom: 20px; }
+    .sobre-numbers {
+      display: flex; gap: 36px;
+      margin-top: 36px; flex-wrap: wrap;
+    }
+    .sobre-num { display: flex; flex-direction: column; gap: 2px; }
+    .sobre-num-val {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.2rem; color: var(--gold); line-height: 1;
+    }
+    .sobre-num-label { font-size: .78rem; color: var(--gray); }
+
+    /* ── SERVIÇOS ──────────────────────────────────────── */
+    #servicos {
+      padding: 100px 0;
+      background: var(--bg-card);
+    }
+    .servicos-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      margin-top: 52px;
+    }
+    .servico-card {
+      background: rgba(9,17,31,.5);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 32px 28px;
+      transition: background .3s, border-color .3s, transform .3s;
+    }
+    .servico-card:hover {
+      background: rgba(201,168,76,.07);
+      border-color: rgba(201,168,76,.35);
+      transform: translateY(-4px);
+    }
+    .serv-icon {
+      width: 56px; height: 56px;
+      background: rgba(201,168,76,.1);
+      border: 1px solid rgba(201,168,76,.2);
+      border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 20px;
+    }
+    .servico-card h4 {
+      font-size: 1.1rem;
+      margin-bottom: 10px;
+    }
+    .servico-card p { font-size: .88rem; color: var(--gray); }
+
+    /* ── DEPOIMENTOS ───────────────────────────────────── */
+    #depoimentos { padding: 100px 0; }
+    .dep-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      margin-top: 52px;
+    }
+    .dep-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 32px 28px;
+      position: relative;
+    }
+    .dep-quote {
+      position: absolute; top: 24px; right: 24px;
+      font-size: 3.5rem;
+      color: var(--gold);
+      opacity: .15;
+      font-family: 'Playfair Display', serif;
+      line-height: 1;
+    }
+    .stars { color: var(--gold); font-size: .9rem; margin-bottom: 16px; letter-spacing: 2px; }
+    .dep-text { font-size: .9rem; color: var(--gray); margin-bottom: 24px; line-height: 1.7; }
+    .dep-author { display: flex; align-items: center; gap: 14px; }
+    .dep-avatar {
+      width: 46px; height: 46px;
+      background: linear-gradient(135deg, var(--gold-dim), var(--gold));
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Playfair Display', serif;
+      font-size: 1.1rem;
+      color: var(--bg-deep);
+      font-weight: 700;
+    }
+    .dep-name { font-weight: 600; font-size: .9rem; }
+    .dep-type { font-size: .78rem; color: var(--gray); }
+
+    /* ── PARCEIROS ─────────────────────────────────────── */
+    #parceiros {
+      padding: 72px 0;
+      background: var(--bg-card);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+    .parceiros-label { text-align: center; margin-bottom: 36px; }
+    .parceiros-row {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 48px;
+      flex-wrap: wrap;
+    }
+    .parceiro-item {
+      display: flex; flex-direction: column; align-items: center; gap: 8px;
+      opacity: .45;
+      transition: opacity .3s;
+      cursor: pointer;
+    }
+    .parceiro-item:hover { opacity: 1; }
+    .parceiro-logo {
+      height: 38px;
+      display: flex; align-items: center;
+      font-family: 'Playfair Display', serif;
+      font-size: 1.2rem;
+      font-weight: 700;
+      letter-spacing: .05em;
+      color: var(--white);
+    }
+    .parceiro-label { font-size: .7rem; color: var(--gray); text-transform: uppercase; letter-spacing: .12em; }
+
+    /* ── CTA ───────────────────────────────────────────── */
+    #cta { padding: 100px 0; }
+    .cta-inner {
+      background: linear-gradient(135deg, var(--bg-card), #0F1E32);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 72px 64px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 72px;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .cta-inner::before {
+      content: '';
+      position: absolute;
+      top: -60px; right: -60px;
+      width: 300px; height: 300px;
+      background: radial-gradient(circle, rgba(201,168,76,.12) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .cta-text .section-title { font-size: clamp(1.7rem, 3vw, 2.5rem); }
+    .cta-text p { color: var(--gray); margin: 18px 0 32px; font-size: .95rem; }
+    .cta-btns { display: flex; gap: 14px; flex-wrap: wrap; }
+    .btn-primary {
+      background: var(--gold);
+      color: var(--bg-deep);
+      border: none;
+      padding: 13px 26px;
+      border-radius: 7px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: .9rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex; align-items: center; gap: 8px;
+      transition: background .25s, transform .2s;
+    }
+    .btn-primary:hover { background: var(--gold-light); transform: translateY(-1px); }
+    .cta-form { display: flex; flex-direction: column; gap: 14px; }
+    .form-row { display: flex; gap: 12px; }
+    .form-group { flex: 1; display: flex; flex-direction: column; gap: 6px; }
+    .form-group label { font-size: .75rem; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--gold); }
+    .form-group input,
+    .form-group select {
+      background: rgba(255,255,255,.05);
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: 8px;
+      padding: 11px 14px;
+      color: var(--white);
+      font-family: 'DM Sans', sans-serif;
+      font-size: .9rem;
+      outline: none;
+      transition: border-color .25s;
+      -webkit-appearance: none;
+    }
+    .form-group input:focus,
+    .form-group select:focus { border-color: var(--gold); }
+    .form-group select option { background: #0D1826; }
+    .btn-form {
+      background: var(--gold);
+      color: var(--bg-deep);
+      border: none;
+      padding: 13px;
+      border-radius: 8px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: .9rem;
+      font-weight: 700;
+      cursor: pointer;
+      letter-spacing: .04em;
+      transition: background .25s, transform .2s;
+    }
+    .btn-form:hover { background: var(--gold-light); transform: translateY(-1px); }
+
+    /* ── FOOTER ────────────────────────────────────────── */
+    footer {
+      background: #060E1A;
+      border-top: 1px solid var(--border);
+      padding: 72px 0 32px;
+    }
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 1.6fr 1fr 1fr 1fr;
+      gap: 48px;
+      margin-bottom: 56px;
+    }
+    .footer-brand .nav-logo-text { font-size: 1.5rem; }
+    .footer-slogan { color: var(--gray); font-size: .88rem; margin: 12px 0 24px; font-style: italic; }
+    .footer-social { display: flex; gap: 10px; }
+    .social-btn {
+      width: 36px; height: 36px;
+      background: rgba(255,255,255,.06);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      transition: background .25s, border-color .25s;
+    }
+    .social-btn:hover { background: rgba(201,168,76,.15); border-color: rgba(201,168,76,.4); }
+    .footer-col h5 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1rem;
+      margin-bottom: 20px;
+      color: var(--white);
+    }
+    .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .footer-col ul li a { font-size: .86rem; color: var(--gray); transition: color .25s; }
+    .footer-col ul li a:hover { color: var(--gold); }
+    .footer-info { display: flex; flex-direction: column; gap: 12px; }
+    .footer-info-item { display: flex; align-items: flex-start; gap: 10px; font-size: .86rem; color: var(--gray); }
+    .footer-bar {
+      border-top: 1px solid var(--border);
+      padding-top: 28px;
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 14px;
+    }
+    .footer-bar p { font-size: .8rem; color: var(--gray); }
+    .footer-creci {
+      display: flex; align-items: center; gap: 8px;
+      font-size: .8rem; color: var(--gold);
+      background: rgba(201,168,76,.08);
+      border: 1px solid rgba(201,168,76,.2);
+      padding: 6px 14px;
+      border-radius: 100px;
+    }
+
+    /* ── WHATSAPP FLOAT ────────────────────────────────── */
+    .wa-float {
+      position: fixed;
+      bottom: 28px; right: 28px;
+      z-index: 200;
+      display: flex; align-items: center; gap: 12px;
+    }
+    .wa-tooltip {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      color: var(--white);
+      font-size: .82rem;
+      font-weight: 500;
+      padding: 8px 14px;
+      border-radius: 8px;
+      white-space: nowrap;
+      opacity: 0;
+      transform: translateX(8px);
+      transition: opacity .3s, transform .3s;
+      pointer-events: none;
+    }
+    .wa-float:hover .wa-tooltip { opacity: 1; transform: none; }
+    .wa-btn {
+      width: 58px; height: 58px;
+      background: #25D366;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 4px 20px rgba(37,211,102,.4);
+      transition: transform .2s, box-shadow .2s;
+      flex-shrink: 0;
+    }
+    .wa-btn:hover { transform: scale(1.08); box-shadow: 0 6px 28px rgba(37,211,102,.55); }
+    .wa-ring {
+      position: absolute;
+      width: 58px; height: 58px;
+      border-radius: 50%;
+      border: 2px solid rgba(37,211,102,.5);
+      animation: wa-ring 2s infinite;
+      right: 0; bottom: 0;
+    }
+    @keyframes wa-ring {
+      0%   { transform: scale(1); opacity: .6; }
+      100% { transform: scale(1.55); opacity: 0; }
+    }
+
+    /* ── RESPONSIVE ────────────────────────────────────── */
+    @media (max-width: 1024px) {
+      .imoveis-grid { grid-template-columns: repeat(2, 1fr); }
+      .cat-grid { grid-template-columns: repeat(3, 1fr); }
+      .servicos-grid { grid-template-columns: repeat(2, 1fr); }
+      .dep-grid { grid-template-columns: repeat(2, 1fr); dep-grid }
+      .sobre-grid { grid-template-columns: 1fr; }
+      .sobre-img { height: 320px; order: -1; }
+      .footer-grid { grid-template-columns: 1fr 1fr; }
+      .cta-inner { grid-template-columns: 1fr; gap: 40px; padding: 48px 40px; }
+    }
+    @media (max-width: 768px) {
+      .nav-links, .btn-wa { display: none; }
+      .hamburger { display: flex; }
+      .imoveis-grid { grid-template-columns: 1fr; }
+      .cat-grid { grid-template-columns: repeat(3, 1fr); }
+      .servicos-grid { grid-template-columns: 1fr; }
+      .dep-grid { grid-template-columns: 1fr; }
+      .footer-grid { grid-template-columns: 1fr; }
+      .cta-inner { padding: 36px 24px; }
+      .hero-stats { gap: 24px; }
+      .form-row { flex-direction: column; }
+    }
+    @media (max-width: 480px) {
+      .cat-grid { grid-template-columns: repeat(2, 1fr); }
+      .parceiros-row { gap: 28px; }
+    }
+
+    /* ── MOBILE NAV ────────────────────────────────────── */
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(9,17,31,.97);
+      z-index: 99;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 32px;
+    }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.8rem;
+      color: var(--white);
+      transition: color .25s;
+    }
+    .mobile-menu a:hover { color: var(--gold); }
+    .mobile-close {
+      position: absolute; top: 24px; right: 24px;
+      font-size: 2rem; cursor: pointer; color: var(--gray);
+      background: none; border: none;
+    }
+    .mobile-wa {
+      margin-top: 16px;
+      background: #25D366;
+      color: #fff !important;
+      font-family: 'DM Sans', sans-serif !important;
+      font-size: 1rem !important;
+      padding: 12px 32px;
+      border-radius: 8px;
+    }
+  </style>
+</head>
+<body>
+
+<!-- MOBILE MENU -->
+<nav class="mobile-menu" id="mobileMenu">
+  <button class="mobile-close" onclick="toggleMenu()">✕</button>
+  <a href="#inicio" onclick="toggleMenu()">Início</a>
+  <a href="#imoveis" onclick="toggleMenu()">Imóveis</a>
+  <a href="#sobre" onclick="toggleMenu()">Sobre</a>
+  <a href="#servicos" onclick="toggleMenu()">Serviços</a>
+  <a href="#cta" onclick="toggleMenu()">Contato</a>
+  <a href="https://wa.me/5531999999999" target="_blank" class="mobile-wa">Falar com Corretor</a>
+</nav>
+
+<!-- NAVBAR -->
+<header id="navbar">
+  <div class="container">
+    <div class="nav-inner">
+      <div class="nav-logo">
+        <svg class="nav-logo-icon" viewBox="0 0 38 38" fill="none">
+          <polygon points="19,4 34,20 19,28 4,20" fill="none" stroke="#C9A84C" stroke-width="1.5"/>
+          <polygon points="19,10 29,20 19,25 9,20" fill="#C9A84C" opacity=".25"/>
+          <line x1="19" y1="4" x2="19" y2="34" stroke="#C9A84C" stroke-width="1" opacity=".4"/>
+        </svg>
+        <div class="nav-logo-text">Velória <span>Imóveis</span></div>
+      </div>
+      <ul class="nav-links">
+        <li><a href="#inicio">Início</a></li>
+        <li><a href="#imoveis">Imóveis</a></li>
+        <li><a href="#sobre">Sobre</a></li>
+        <li><a href="#servicos">Serviços</a></li>
+        <li><a href="#cta">Contato</a></li>
+      </ul>
+      <a href="https://wa.me/5531999999999" target="_blank" class="btn-wa">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.553 4.116 1.524 5.847L.057 23.885a.5.5 0 00.611.628l6.218-1.632A11.956 11.956 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22a9.956 9.956 0 01-5.073-1.381l-.363-.215-3.767.988.988-3.671-.236-.38A9.964 9.964 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
+        Falar com Corretor
+      </a>
+      <div class="hamburger" onclick="toggleMenu()">
+        <span></span><span></span><span></span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- HERO -->
+<section id="inicio">
+  <div id="hero">
+    <div class="hero-bg-pattern"></div>
+    <div class="hero-grid-line"></div>
+    <div class="container">
+      <div class="hero-content">
+        <div class="hero-tag reveal">
+          <div class="hero-dot"></div>
+          Imóveis de Alto Padrão em BH
+        </div>
+        <h1 class="hero-title reveal reveal-d1">
+          Encontre o imóvel que<br><em>define quem você é.</em>
+        </h1>
+        <p class="hero-sub reveal reveal-d2">
+          Há mais de 15 anos conectando pessoas aos melhores imóveis de Belo Horizonte. Exclusividade, transparência e resultados reais.
+        </p>
+
+        <div class="search-bar reveal reveal-d3">
+          <div class="search-field">
+            <label>Tipo de Imóvel</label>
+            <select>
+              <option value="">Todos os tipos</option>
+              <option>Apartamento</option>
+              <option>Casa</option>
+              <option>Cobertura</option>
+              <option>Terreno</option>
+              <option>Comercial</option>
+            </select>
+          </div>
+          <div class="search-field">
+            <label>Cidade / Bairro</label>
+            <input type="text" placeholder="Ex: Savassi, Lourdes..." />
+          </div>
+          <div class="search-field">
+            <label>Faixa de Preço</label>
+            <select>
+              <option value="">Qualquer valor</option>
+              <option>Até R$ 300.000</option>
+              <option>R$ 300k – R$ 600k</option>
+              <option>R$ 600k – R$ 1M</option>
+              <option>R$ 1M – R$ 2M</option>
+              <option>Acima de R$ 2M</option>
+            </select>
+          </div>
+          <div class="search-field">
+            <label>Finalidade</label>
+            <select>
+              <option>Comprar</option>
+              <option>Alugar</option>
+              <option>Lançamentos</option>
+            </select>
+          </div>
+          <button class="btn-search">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+            Buscar
+          </button>
+        </div>
+
+        <div class="hero-stats reveal reveal-d4">
+          <div class="stat">
+            <div class="stat-num">340+</div>
+            <div class="stat-label">Imóveis Disponíveis</div>
+          </div>
+          <div class="stat">
+            <div class="stat-num">15</div>
+            <div class="stat-label">Anos de Mercado</div>
+          </div>
+          <div class="stat">
+            <div class="stat-num">2.800+</div>
+            <div class="stat-label">Clientes Atendidos</div>
+          </div>
+          <div class="stat">
+            <div class="stat-num">98%</div>
+            <div class="stat-label">Satisfação</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- IMÓVEIS EM DESTAQUE -->
+<section id="imoveis">
+  <div class="container">
+    <div class="section-header">
+      <div>
+        <span class="section-label reveal">Portfólio Selecionado</span>
+        <h2 class="section-title reveal reveal-d1">Imóveis em <span class="gold">Destaque</span></h2>
+        <p class="section-sub reveal reveal-d2">Curadoria exclusiva dos melhores imóveis disponíveis em Belo Horizonte.</p>
+      </div>
+      <button class="btn-outline reveal">Ver Todos os Imóveis →</button>
+    </div>
+
+    <div class="imoveis-grid">
+
+      <!-- Card 1 -->
+      <div class="imovel-card reveal">
+        <div class="card-img">
+          <svg class="card-img-icon" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width="1"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          <div class="badge badge-venda">Venda</div>
+          <div class="card-fav">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+          </div>
+        </div>
+        <div class="card-body">
+          <h3 class="card-title">Apartamento Jardim das Flores</h3>
+          <div class="card-addr">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#8A97A8" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            Savassi, Belo Horizonte
+          </div>
+          <div class="card-price">R$ 890.000 <span></span></div>
+          <div class="card-attrs">
+            <div class="card-attr">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#8A97A8" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+              120m²
+            </div>
+            <div class="card-attr">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#8A97A8" stroke-width="2"><path d="M2 4v16M22 4v16M2 12h20M7 4v8M17 4v8"/></svg>
+              3 quartos
+            </div>
+            <div class="card-attr">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#8A97A8" stroke-width="2"><rect x="2" y="8" width="20" height="12" rx="2"/><path d="M6 8V6a2 2 0 012-2h8a2 2 0 012 2v2"/></svg>
+              2 vagas
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="imovel-card reveal reveal-d1">
+        <div class="card-img">
+          <svg class="card-img-icon" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width="1"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          <div class="badge badge-venda">Venda</div>
+          <div class="card-fav">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+          </div>
+        </div>
+        <div class="card-body">
+          <h3 class="card-title">Casa Duplex Vila Aurora</h3>
+          <div class="card-addr">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#8A97A8" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            Buritis, Belo Horizonte
+          </div>
+          <div class="card-price">R$ 1.250.000 <span></span></div>
+          <div class="card-attrs">
+            <div class="card-attr">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#8A97A8" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+              280m²
+            </div>
+            <div class="card-attr">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#8A97A8" stroke-width="2"><path d="M2 4v16M22 4v16M2 12h20M7 4v8M17 4v8"/></svg>
+              4 quartos
+            </div>
+            <div class="card-attr">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#8A97A8" stroke-width="2"><rect x="2" y="8" width="20" height="12" rx="2"/><path d="M6 8V6a2 2 0 012-2h8a2 2 0 012 2v2"/></svg>
+              3 vagas
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="imovel-card reveal reveal-d2">
+        <div class="card-img" style="background: linear-gradient(135deg, #0F1A28, #1A2A3A);">
+          <svg class="card-img-icon" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width="1"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          <div class="badge badge-lanca">Lançamento</div>
+          <div class="card-fav">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+          </div>
+        </div>
+        <div class="card-body">
+          <h3 class="card-title">Cobertura Terraço Nobre</h3>
+          <div class="card-addr">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#8A97A8" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            Lourdes, Belo Horizonte
+          </div>
+          <div class="card-price">R$ 2.350.000 <span></span></div>
+          <div class="card-attrs">
+            <div class="card-attr">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#8A97A8" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+              380m²
+            </div>
+            <div class="card-attr">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#8A97A8" stroke-width="2"><path d="M2 4v16M22 4v16M2 12h20M7 4v8M17 4v8"/></svg>
+              4 suítes
+            </div>
+            <div class="card-attr">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#8A97A8" stroke-width="2"><rect x="2" y="8" width="20" height="12" rx="2"/><path d="M6 8V6a2 2 0 012-2h8a2 2 0 012 2v2"/></svg>
+              4 vagas
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 4 -->
+      <div class="imovel-card reveal reveal-d1">
+        <div class="card-img">
+          <svg class="card-img-icon" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width="1"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          <div class="badge badge-aluguel">Aluguel</div>
+          <div class="card-fav">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+          </div>
+        </div>
+        <div class="card-body">
+          <h3 class="card-title">Apartamento Pinheiros Verde</h3>
+          <div class="card-addr">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#8A97A8" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            Funcionários, Belo Horizonte
+          </div>
+          <div class="card-price">R$ 4.200<span>/mês</span></div>
+          <div class="card-attrs">
+            <div class="card-attr">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#8A97A8" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+              85m²
+            </div>
+            <div class="card-attr">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#8A97A8" stroke-width="2"><path d="M2 4v16M22 4v16M2 12h20M7 4v8M17 4v8"/></svg>
+              2 quartos
+            </div>
+            <div class="card-attr">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#8A97A8" stroke-width="2"><rect x="2" y="8" width="20" height="12" rx="2"/><path d="M6 8V6a2 2 0 012-2h8a2 2 0 012 2v2"/></svg>
+              1 vaga
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 5 -->
+      <div class="imovel-card reveal reveal-d2">
+        <div class="card-img">
+          <svg class="card-img-icon" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width="1"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          <div class="badge badge-venda">Venda</div>
+          <div class="card-fav">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+          </div>
+        </div>
+        <div class="card-body">
+          <h3 class="card-title">Studio Moderno Centro</h3>
+          <div class="card-addr">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#8A97A8" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            Centro, Belo Horizonte
+          </div>
+          <div class="card-price">R$ 280.000 <span></span></div>
+          <div class="card-attrs">
+            <div class="card-attr">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#8A97A8" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+              42m²
+            </div>
+            <div class="card-attr">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#8A97A8" stroke-width="2"><path d="M2 4v16M22 4v16M2 12h20M7 4v8M17 4v8"/></svg>
+              1 quarto
+            </div>
+            <div class="card-attr">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#8A97A8" stroke-width="2"><rect x="2" y="8" width="20" height="12" rx="2"/><path d="M6 8V6a2 2 0 012-2h8a2 2 0 012 2v2"/></svg>
+              1 vaga
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 6 -->
+      <div class="imovel-card reveal reveal-d3">
+        <div class="card-img">
+          <svg class="card-img-icon" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width="1"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          <div class="badge badge-venda">Venda</div>
+          <div class="card-fav">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+          </div>
+        </div>
+        <div class="card-body">
+          <h3 class="card-title">Casa Térrea Jardim Real</h3>
+          <div class="card-addr">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#8A97A8" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            Venda Nova, Belo Horizonte
+          </div>
+          <div class="card-price">R$ 520.000 <span></span></div>
+          <div class="card-attrs">
+            <div class="card-attr">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#8A97A8" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+              180m²
+            </div>
+            <div class="card-attr">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#8A97A8" stroke-width="2"><path d="M2 4v16M22 4v16M2 12h20M7 4v8M17 4v8"/></svg>
+              3 quartos
+            </div>
+            <div class="card-attr">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#8A97A8" stroke-width="2"><rect x="2" y="8" width="20" height="12" rx="2"/><path d="M6 8V6a2 2 0 012-2h8a2 2 0 012 2v2"/></svg>
+              2 vagas
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- CATEGORIAS -->
+<section id="categorias">
+  <div class="container">
+    <div style="text-align:center">
+      <span class="section-label reveal">Explorar por Tipo</span>
+      <h2 class="section-title reveal reveal-d1">Busque pelo que <span class="gold">você procura</span></h2>
+    </div>
+    <div class="cat-grid">
+      <div class="cat-card reveal">
+        <div class="cat-icon">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+        </div>
+        <span class="cat-name">Apartamento</span>
+      </div>
+      <div class="cat-card reveal reveal-d1">
+        <div class="cat-icon">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width="1.5"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        </div>
+        <span class="cat-name">Casa</span>
+      </div>
+      <div class="cat-card reveal reveal-d2">
+        <div class="cat-icon">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width="1.5"><path d="M2 22V8l10-6 10 6v14M6 22V14h12v8"/><path d="M10 14v4h4v-4z"/></svg>
+        </div>
+        <span class="cat-name">Cobertura</span>
+      </div>
+      <div class="cat-card reveal reveal-d3">
+        <div class="cat-icon">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width="1.5"><path d="M3 3h18v18H3zM3 9h18M3 15h18M9 3v18M15 3v18"/></svg>
+        </div>
+        <span class="cat-name">Terreno</span>
+      </div>
+      <div class="cat-card reveal reveal-d4">
+        <div class="cat-icon">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width="1.5"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2M12 12v4M10 14h4"/></svg>
+        </div>
+        <span class="cat-name">Comercial</span>
+      </div>
+      <div class="cat-card reveal reveal-d5">
+        <div class="cat-icon">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width="1.5"><polygon points="12,2 15,9 22,9 17,14 19,21 12,17 5,21 7,14 2,9 9,9"/></svg>
+        </div>
+        <span class="cat-name">Lançamentos</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SOBRE -->
+<section id="sobre">
+  <div class="container">
+    <div class="sobre-grid">
+      <div class="sobre-img reveal">
+        <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width=".6" opacity=".2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+        <div class="sobre-badge">
+          15<small>anos no mercado</small>
+        </div>
+      </div>
+      <div class="sobre-text">
+        <span class="section-label reveal">Quem Somos</span>
+        <h2 class="section-title reveal reveal-d1">Mais que uma imobiliária —<br><span class="gold">uma parceria de vida.</span></h2>
+        <p class="reveal reveal-d2">A Velória Imóveis nasceu do desejo de transformar a experiência de comprar, vender ou alugar um imóvel em Belo Horizonte. Acreditamos que cada negociação é única e merece atenção especializada.</p>
+        <p class="reveal reveal-d3">Nossa equipe de corretores certificados alia profundo conhecimento do mercado local com atendimento personalizado, garantindo que você tome as melhores decisões com segurança e tranquilidade.</p>
+        <div class="sobre-numbers reveal reveal-d4">
+          <div class="sobre-num">
+            <div class="sobre-num-val">15+</div>
+            <div class="sobre-num-label">Anos no mercado</div>
+          </div>
+          <div class="sobre-num">
+            <div class="sobre-num-val">1.200+</div>
+            <div class="sobre-num-label">Imóveis vendidos</div>
+          </div>
+          <div class="sobre-num">
+            <div class="sobre-num-val">8</div>
+            <div class="sobre-num-label">Cidades atendidas</div>
+          </div>
+          <div class="sobre-num">
+            <div class="sobre-num-val">32</div>
+            <div class="sobre-num-label">Corretores</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVIÇOS -->
+<section id="servicos">
+  <div class="container">
+    <div style="text-align:center; margin-bottom: 0">
+      <span class="section-label reveal">O que Oferecemos</span>
+      <h2 class="section-title reveal reveal-d1">Soluções completas para o <span class="gold">seu imóvel</span></h2>
+      <p class="section-sub reveal reveal-d2" style="margin: 0 auto 0">Do primeiro contato ao pós-venda, cuidamos de cada detalhe para você.</p>
+    </div>
+    <div class="servicos-grid">
+      <div class="servico-card reveal">
+        <div class="serv-icon">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width="1.5"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        </div>
+        <h4>Compra e Venda</h4>
+        <p>Negociação estratégica com avaliação de mercado precisa. Encontramos o imóvel ideal ou o comprador certo para você.</p>
+      </div>
+      <div class="servico-card reveal reveal-d1">
+        <div class="serv-icon">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width="1.5"><path d="M21 10H3M21 6H3M21 14H3M21 18H3"/></svg>
+        </div>
+        <h4>Locação</h4>
+        <p>Gestão completa do processo de locação: divulgação, análise cadastral, contratos e acompanhamento durante toda a vigência.</p>
+      </div>
+      <div class="servico-card reveal reveal-d2">
+        <div class="serv-icon">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width="1.5"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        </div>
+        <h4>Avaliação de Imóveis</h4>
+        <p>Laudos técnicos precisos com base em análise comparativa de mercado e metodologia reconhecida pelo CRECI-MG.</p>
+      </div>
+      <div class="servico-card reveal reveal-d1">
+        <div class="serv-icon">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width="1.5"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+        </div>
+        <h4>Consultoria Jurídica</h4>
+        <p>Análise documental completa, regularização de imóveis e suporte jurídico especializado em direito imobiliário.</p>
+      </div>
+      <div class="servico-card reveal reveal-d2">
+        <div class="serv-icon">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width="1.5"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+        </div>
+        <h4>Financiamento</h4>
+        <p>Assessoria completa em financiamentos: simulações, orientação na escolha da melhor linha de crédito e apoio na aprovação.</p>
+      </div>
+      <div class="servico-card reveal reveal-d3">
+        <div class="serv-icon">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width="1.5"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><path d="M9 22V12h6v10"/><path d="M12 7h.01"/></svg>
+        </div>
+        <h4>Adm. de Condomínios</h4>
+        <p>Gestão profissional de condomínios residenciais e comerciais: assembleias, financeiro, manutenção e atendimento aos condôminos.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DEPOIMENTOS -->
+<section id="depoimentos">
+  <div class="container">
+    <div style="text-align:center">
+      <span class="section-label reveal">Clientes Satisfeitos</span>
+      <h2 class="section-title reveal reveal-d1">O que dizem sobre <span class="gold">a Velória</span></h2>
+    </div>
+    <div class="dep-grid">
+      <div class="dep-card reveal">
+        <div class="dep-quote">"</div>
+        <div class="stars">★★★★★</div>
+        <p class="dep-text">A equipe da Velória foi impecável do início ao fim. Encontraram exatamente o apartamento que eu buscava no Savassi, dentro do meu orçamento e com toda a documentação em ordem. Recomendo sem hesitar.</p>
+        <div class="dep-author">
+          <div class="dep-avatar">MF</div>
+          <div>
+            <div class="dep-name">Marcos Ferreira</div>
+            <div class="dep-type">Compra de Apartamento · Savassi</div>
+          </div>
+        </div>
+      </div>
+      <div class="dep-card reveal reveal-d1">
+        <div class="dep-quote">"</div>
+        <div class="stars">★★★★★</div>
+        <p class="dep-text">Vendi minha casa em apenas 23 dias pelo valor que eu queria. A estratégia de divulgação deles é diferente — trouxeram compradores qualificados desde o primeiro dia. Atendimento de altíssimo nível.</p>
+        <div class="dep-author">
+          <div class="dep-avatar">AS</div>
+          <div>
+            <div class="dep-name">Ana Santos</div>
+            <div class="dep-type">Venda de Casa · Buritis</div>
+          </div>
+        </div>
+      </div>
+      <div class="dep-card reveal reveal-d2">
+        <div class="dep-quote">"</div>
+        <div class="stars">★★★★★</div>
+        <p class="dep-text">Administração de condomínio transparente e eficiente. As assembleias são bem organizadas, as finanças sempre claras e a manutenção preventiva reduziu nossos custos em 30% no primeiro ano.</p>
+        <div class="dep-author">
+          <div class="dep-avatar">RL</div>
+          <div>
+            <div class="dep-name">Roberto Lima</div>
+            <div class="dep-type">Administração de Condomínio · Lourdes</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PARCEIROS -->
+<section id="parceiros">
+  <div class="container">
+    <div class="parceiros-label">
+      <span class="section-label reveal">Nossos Parceiros</span>
+      <h2 class="section-title reveal reveal-d1" style="font-size:1.6rem">Trabalhamos com as melhores <span class="gold">instituições</span></h2>
+    </div>
+    <div class="parceiros-row reveal reveal-d2">
+      <div class="parceiro-item">
+        <div class="parceiro-logo">CAIXA</div>
+        <span class="parceiro-label">Caixa Econômica</span>
+      </div>
+      <div class="parceiro-item">
+        <div class="parceiro-logo">ITAÚ</div>
+        <span class="parceiro-label">Banco Itaú</span>
+      </div>
+      <div class="parceiro-item">
+        <div class="parceiro-logo">BRADESCO</div>
+        <span class="parceiro-label">Bradesco</span>
+      </div>
+      <div class="parceiro-item">
+        <div class="parceiro-logo">SANTANDER</div>
+        <span class="parceiro-label">Santander</span>
+      </div>
+      <div class="parceiro-item">
+        <div class="parceiro-logo" style="font-size:.85rem; max-width:100px; text-align:center; line-height:1.2">MINHA CASA MINHA VIDA</div>
+        <span class="parceiro-label">MCMV</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA FINAL -->
+<section id="cta">
+  <div class="container">
+    <div class="cta-inner">
+      <div class="cta-text reveal">
+        <span class="section-label">Pronto para começar?</span>
+        <h2 class="section-title">Seu próximo imóvel começa <span class="gold">aqui.</span></h2>
+        <p>Fale agora com um de nossos especialistas e dê o primeiro passo rumo ao imóvel dos seus sonhos. Atendimento personalizado, sem compromisso.</p>
+        <div class="cta-btns">
+          <a href="https://wa.me/5531999999999" target="_blank" class="btn-primary">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.553 4.116 1.524 5.847L.057 23.885a.5.5 0 00.611.628l6.218-1.632A11.956 11.956 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22a9.956 9.956 0 01-5.073-1.381l-.363-.215-3.767.988.988-3.671-.236-.38A9.964 9.964 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
+            Falar no WhatsApp
+          </a>
+          <a href="tel:+5531999999999" class="btn-outline">Ligar Agora</a>
+        </div>
+      </div>
+      <div class="cta-form reveal reveal-d2">
+        <div class="form-row">
+          <div class="form-group">
+            <label>Nome Completo</label>
+            <input type="text" placeholder="Seu nome" />
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>E-mail</label>
+            <input type="email" placeholder="seu@email.com" />
+          </div>
+          <div class="form-group">
+            <label>Telefone</label>
+            <input type="tel" placeholder="(31) 9 0000-0000" />
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Interesse</label>
+            <select>
+              <option value="">Selecione...</option>
+              <option>Comprar um imóvel</option>
+              <option>Vender meu imóvel</option>
+              <option>Alugar um imóvel</option>
+              <option>Avaliação de imóvel</option>
+              <option>Financiamento</option>
+              <option>Administração de condomínio</option>
+            </select>
+          </div>
+        </div>
+        <button class="btn-form">Solicitar Atendimento →</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="nav-logo" style="margin-bottom:0">
+          <svg width="32" height="32" viewBox="0 0 38 38" fill="none">
+            <polygon points="19,4 34,20 19,28 4,20" fill="none" stroke="#C9A84C" stroke-width="1.5"/>
+            <polygon points="19,10 29,20 19,25 9,20" fill="#C9A84C" opacity=".25"/>
+          </svg>
+          <div class="nav-logo-text">Velória <span>Imóveis</span></div>
+        </div>
+        <p class="footer-slogan">Cada imóvel conta uma história. Conte a sua conosco.</p>
+        <div class="footer-social">
+          <a href="#" class="social-btn">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+          </a>
+          <a href="#" class="social-btn">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="#C9A84C"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+          </a>
+          <a href="#" class="social-btn">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width="2"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg>
+          </a>
+          <a href="#" class="social-btn">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="#C9A84C"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.18 8.18 0 004.78 1.52V6.76a4.85 4.85 0 01-1.01-.07z"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <div class="footer-col">
+        <h5>Links Rápidos</h5>
+        <ul>
+          <li><a href="#inicio">Início</a></li>
+          <li><a href="#imoveis">Imóveis à Venda</a></li>
+          <li><a href="#imoveis">Imóveis para Alugar</a></li>
+          <li><a href="#imoveis">Lançamentos</a></li>
+          <li><a href="#sobre">Sobre Nós</a></li>
+          <li><a href="#servicos">Serviços</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h5>Nossos Serviços</h5>
+        <ul>
+          <li><a href="#">Compra e Venda</a></li>
+          <li><a href="#">Locação</a></li>
+          <li><a href="#">Avaliação</a></li>
+          <li><a href="#">Consultoria Jurídica</a></li>
+          <li><a href="#">Financiamento</a></li>
+          <li><a href="#">Adm. Condomínios</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h5>Contato</h5>
+        <div class="footer-info">
+          <div class="footer-info-item">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width="2" style="flex-shrink:0;margin-top:2px"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            Av. Getúlio Vargas, 1.250 · Savassi<br>Belo Horizonte – MG
+          </div>
+          <div class="footer-info-item">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width="2" style="flex-shrink:0"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.67A2 2 0 012 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 14.92z"/></svg>
+            (31) 9 9999-9999
+          </div>
+          <div class="footer-info-item">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width="2" style="flex-shrink:0"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            contato@veloriaimoveis.com.br
+          </div>
+          <div class="footer-info-item">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width="2" style="flex-shrink:0"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+            Seg–Sex: 8h–18h · Sáb: 9h–13h
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-bar">
+      <p>© 2024 Velória Imóveis. Todos os direitos reservados.</p>
+      <div class="footer-creci">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        CRECI-MG 12.345-J
+      </div>
+      <p>Política de Privacidade · Termos de Uso</p>
+    </div>
+  </div>
+</footer>
+
+<!-- WHATSAPP FLOAT -->
+<div class="wa-float">
+  <div class="wa-tooltip">Fale com um corretor agora!</div>
+  <a href="https://wa.me/5531999999999" target="_blank" class="wa-btn" style="position:relative">
+    <div class="wa-ring"></div>
+    <svg width="28" height="28" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.553 4.116 1.524 5.847L.057 23.885a.5.5 0 00.611.628l6.218-1.632A11.956 11.956 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22a9.956 9.956 0 01-5.073-1.381l-.363-.215-3.767.988.988-3.671-.236-.38A9.964 9.964 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
+  </a>
+</div>
+
+<script>
+  // Navbar scroll
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    navbar.classList.toggle('scrolled', window.scrollY > 40);
+  });
+
+  // Mobile menu
+  function toggleMenu() {
+    document.getElementById('mobileMenu').classList.toggle('open');
+  }
+
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.12 });
+  reveals.forEach(el => observer.observe(el));
+
+  // Trigger hero items immediately
+  document.querySelectorAll('#hero .reveal').forEach((el, i) => {
+    setTimeout(() => el.classList.add('visible'), 100 + i * 120);
+  });
+</script>
+</body>
+</html>

@@ -9,9 +9,9 @@ export function Servicos() {
   const inView = useInView(ref, { once: true, margin: '-80px' })
 
   return (
-    <section id="servicos" className="py-28 bg-deep" ref={ref}>
+    <section id="servicos" className="py-16 lg:py-28 bg-deep" ref={ref}>
       <div className="max-w-7xl mx-auto px-6">
-        <div className="grid grid-cols-1 lg:grid-cols-[340px_1fr] gap-20 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-[340px_1fr] gap-10 lg:gap-20 items-start">
 
           {/* Sticky left */}
           <motion.div

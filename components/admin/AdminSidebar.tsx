@@ -4,6 +4,10 @@ import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import { useState } from 'react'
 
+interface Props {
+  onNavigate?: () => void
+}
+
 const navItems = [
   {
     href: '/admin',
@@ -41,7 +45,7 @@ const navItems = [
   },
 ]
 
-export function AdminSidebar() {
+export function AdminSidebar({ onNavigate }: Props) {
   const pathname = usePathname()
   const router = useRouter()
   const [loggingOut, setLoggingOut] = useState(false)
@@ -58,10 +62,10 @@ export function AdminSidebar() {
   }
 
   return (
-    <aside className="w-60 min-h-screen bg-[#070F1C] border-r border-border flex flex-col">
-      {/* Logo */}
-      <div className="p-6 border-b border-border">
-        <Link href="/" className="flex items-center gap-3 group">
+    <aside className="w-64 lg:w-60 min-h-screen bg-[#070F1C] border-r border-border flex flex-col">
+      {/* Logo + close button (mobile) */}
+      <div className="p-5 border-b border-border flex items-center justify-between">
+        <Link href="/" onClick={onNavigate} className="flex items-center gap-3 group">
           <div className="w-9 h-9 rounded-lg bg-gold/15 border border-gold/30 flex items-center justify-center flex-shrink-0">
             <span className="font-serif text-gold text-lg leading-none">V</span>
           </div>
@@ -70,6 +74,17 @@ export function AdminSidebar() {
             <div className="text-muted text-[10px] uppercase tracking-widest">Admin</div>
           </div>
         </Link>
+        {onNavigate && (
+          <button
+            onClick={onNavigate}
+            className="w-8 h-8 flex items-center justify-center rounded-lg text-muted hover:text-off-white hover:bg-white/5 transition-all"
+            aria-label="Fechar menu"
+          >
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+              <path d="M18 6L6 18M6 6l12 12"/>
+            </svg>
+          </button>
+        )}
       </div>
 
       {/* Nav */}
@@ -80,7 +95,8 @@ export function AdminSidebar() {
             <Link
               key={item.href}
               href={item.href}
-              className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all duration-200 ${
+              onClick={onNavigate}
+              className={`flex items-center gap-3 px-3 py-3 rounded-lg text-sm transition-all duration-200 ${
                 active
                   ? 'bg-gold/12 text-gold border border-gold/20'
                   : 'text-muted hover:text-off-white hover:bg-white/5'
@@ -94,11 +110,12 @@ export function AdminSidebar() {
       </nav>
 
       {/* Footer */}
-      <div className="p-4 border-t border-border space-y-2">
+      <div className="p-4 border-t border-border space-y-1">
         <Link
           href="/"
           target="_blank"
-          className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-muted hover:text-off-white hover:bg-white/5 transition-all"
+          onClick={onNavigate}
+          className="flex items-center gap-3 px-3 py-3 rounded-lg text-sm text-muted hover:text-off-white hover:bg-white/5 transition-all"
         >
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
             <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/>
@@ -111,7 +128,7 @@ export function AdminSidebar() {
         <button
           onClick={handleLogout}
           disabled={loggingOut}
-          className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-muted hover:text-red-400 hover:bg-red-500/8 transition-all disabled:opacity-50"
+          className="w-full flex items-center gap-3 px-3 py-3 rounded-lg text-sm text-muted hover:text-red-400 hover:bg-red-500/8 transition-all disabled:opacity-50"
         >
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
             <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/>

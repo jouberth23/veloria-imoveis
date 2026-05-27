@@ -1,10 +1,11 @@
 import type { Metadata } from 'next'
+import { Suspense } from 'react'
 import './globals.css'
 import { Header } from '@/components/layout/Header'
 import { Footer } from '@/components/layout/Footer'
 import { WhatsAppButton } from '@/components/layout/WhatsAppButton'
 import { AdminLoginButton } from '@/components/layout/AdminLoginButton'
-import { getConfiguracoes } from '@/lib/configuracoes'
+import { WHATSAPP_URL } from '@/lib/constants'
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://veloriaimoveis.com.br'),
@@ -30,17 +31,16 @@ export const metadata: Metadata = {
   },
 }
 
-export default async function RootLayout({ children }: { children: React.ReactNode }) {
-  const cfg = await getConfiguracoes()
-  const whatsappUrl = `https://wa.me/${cfg.whatsapp_number}`
-
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="pt-BR">
       <body>
-        <Header whatsappUrl={whatsappUrl} />
+        <Header whatsappUrl={WHATSAPP_URL} />
         <main>{children}</main>
-        <Footer />
-        <WhatsAppButton url={whatsappUrl} />
+        <Suspense fallback={<div className="h-64 bg-[#060E1A]" />}>
+          <Footer />
+        </Suspense>
+        <WhatsAppButton url={WHATSAPP_URL} />
         <AdminLoginButton />
       </body>
     </html>

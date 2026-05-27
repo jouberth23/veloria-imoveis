@@ -1,7 +1,6 @@
 'use client'
 
 import { useState, useEffect, useRef } from 'react'
-import { useRouter } from 'next/navigation'
 
 interface Props {
   onClose: () => void
@@ -11,7 +10,6 @@ export function AdminLoginModal({ onClose }: Props) {
   const [pin, setPin] = useState('')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
-  const router = useRouter()
   const inputRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
@@ -37,7 +35,7 @@ export function AdminLoginModal({ onClose }: Props) {
       const data = await res.json()
 
       if (res.ok) {
-        router.push('/admin')
+        window.location.href = '/admin'
       } else {
         setError(data.error || 'Código incorreto')
         setPin('')

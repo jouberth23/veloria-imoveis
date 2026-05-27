@@ -51,15 +51,31 @@ export function VideoUpload({ videos, onChange }: Props) {
   const [local, setLocal] = useState<LocalVideo[]>([])
 
   async function uploadFile(file: File): Promise<string> {
-    const fd = new FormData()
-    fd.append('file', file)
-    const res = await fetch('/api/admin/upload', { method: 'POST', body: fd })
+    const ext = file.name.split('.').pop()?.toLowerCase() || 'mp4'
+    const safeBase = file.name.replace(/\.[^.]+$/, '').replace(/[^a-zA-Z0-9]/g, '_').slice(0, 40)
+    const fileName = `${Date.now()}_${safeBase}.${ext}`
+
+    // Step 1: Get signed upload URL (tiny JSON request — no file body sent here)
+    const res = await fetch('/api/admin/upload-video', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ fileName }),
+    })
     if (!res.ok) {
-      const d = await res.json()
-      throw new Error(d.error || 'Erro no upload')
+      const d = await res.json().catch(() => ({}))
+      throw new Error(d.error || 'Erro ao preparar upload')
     }
-    const { url } = await res.json()
-    return url
+    const { signedUrl, publicUrl } = await res.json()
+
+    // Step 2: Upload directly to Supabase — bypasses Next.js body size limit
+    const uploadRes = await fetch(signedUrl, {
+      method: 'PUT',
+      body: file,
+      headers: { 'Content-Type': file.type || 'video/mp4', 'x-upsert': 'false' },
+    })
+    if (!uploadRes.ok) throw new Error('Erro no upload do vídeo')
+
+    return publicUrl
   }
 
   async function handleFiles(files: FileList) {

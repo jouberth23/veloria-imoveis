@@ -12,7 +12,7 @@ export async function POST(request: Request) {
 
   if (!sessionSecret) {
     return NextResponse.json(
-      { error: 'Servidor não configurado. Defina ADMIN_SESSION_SECRET no .env.local.' },
+      { error: 'Servidor não configurado. Defina a variável ADMIN_SESSION_SECRET nas configurações de ambiente.' },
       { status: 500 }
     )
   }

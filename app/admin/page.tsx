@@ -4,16 +4,21 @@ import { PropertyTable } from '@/components/admin/PropertyTable'
 import type { ImovelDB } from '@/lib/types'
 
 async function getProperties(): Promise<{ data: ImovelDB[]; error: string | null }> {
+  const controller = new AbortController()
+  const timer = setTimeout(() => controller.abort(), 5000)
   try {
     const supabase = createAdminClient()
     const { data, error } = await supabase
       .from('imoveis')
       .select('*')
       .order('created_at', { ascending: false })
+      .abortSignal(controller.signal)
 
+    clearTimeout(timer)
     if (error) return { data: [], error: error.message }
     return { data: data || [], error: null }
   } catch (e) {
+    clearTimeout(timer)
     const msg = e instanceof Error ? e.message : 'Erro desconhecido'
     return { data: [], error: msg }
   }

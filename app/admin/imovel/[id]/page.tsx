@@ -12,17 +12,22 @@ export const metadata = {
 }
 
 async function getImovel(id: string): Promise<ImovelDB | null> {
+  const controller = new AbortController()
+  const timer = setTimeout(() => controller.abort(), 5000)
   try {
     const supabase = createAdminClient()
     const { data, error } = await supabase
       .from('imoveis')
       .select('*')
       .eq('id', id)
+      .abortSignal(controller.signal)
       .single()
 
+    clearTimeout(timer)
     if (error) return null
     return data as ImovelDB
   } catch {
+    clearTimeout(timer)
     return null
   }
 }

@@ -3,6 +3,8 @@ import './globals.css'
 import { Header } from '@/components/layout/Header'
 import { Footer } from '@/components/layout/Footer'
 import { WhatsAppButton } from '@/components/layout/WhatsAppButton'
+import { AdminLoginButton } from '@/components/layout/AdminLoginButton'
+import { getConfiguracoes } from '@/lib/configuracoes'
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://veloriaimoveis.com.br'),
@@ -28,14 +30,18 @@ export const metadata: Metadata = {
   },
 }
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  const cfg = await getConfiguracoes()
+  const whatsappUrl = `https://wa.me/${cfg.whatsapp_number}`
+
   return (
     <html lang="pt-BR">
       <body>
-        <Header />
+        <Header whatsappUrl={whatsappUrl} />
         <main>{children}</main>
         <Footer />
-        <WhatsAppButton />
+        <WhatsAppButton url={whatsappUrl} />
+        <AdminLoginButton />
       </body>
     </html>
   )

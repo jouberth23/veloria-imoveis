@@ -3,11 +3,12 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { motion, useInView } from 'framer-motion'
-import { useRef } from 'react'
+import { useRef, useState, useEffect } from 'react'
 import { IMOVEIS, formatPreco } from '@/lib/constants'
 import { Card } from '@/components/ui/Card'
 import { Badge } from '@/components/ui/Badge'
 import { SearchBar } from '@/components/ui/SearchBar'
+import { imovelDBToImovel } from '@/lib/types'
 import type { Imovel } from '@/lib/types'
 
 function FeaturedCard({ imovel }: { imovel: Imovel }) {
@@ -87,8 +88,22 @@ function FeaturedCard({ imovel }: { imovel: Imovel }) {
 export function Imoveis() {
   const ref = useRef(null)
   const inView = useInView(ref, { once: true, margin: '-60px' })
-  const destaques = IMOVEIS.filter(i => i.destaque)
+  const [destaques, setDestaques] = useState<Imovel[]>(IMOVEIS.filter(i => i.destaque))
+
+  useEffect(() => {
+    fetch('/api/imoveis')
+      .then((r) => r.json())
+      .then(({ properties, source }) => {
+        if (source === 'supabase' && properties?.length > 0) {
+          const fromDB = properties.map(imovelDBToImovel).filter((i: Imovel) => i.destaque)
+          if (fromDB.length > 0) setDestaques(fromDB)
+        }
+      })
+      .catch(() => {})
+  }, [])
+
   const [featured, ...rest] = destaques
+  if (!featured) return null
 
   return (
     <section id="imoveis" className="py-24 bg-deep" ref={ref}>

@@ -1,11 +1,12 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { IMOVEIS } from '@/lib/constants'
 import { Card } from '@/components/ui/Card'
 import { SearchBar } from '@/components/ui/SearchBar'
-import type { BadgeType, SearchFilters } from '@/lib/types'
+import { imovelDBToImovel } from '@/lib/types'
+import type { BadgeType, SearchFilters, Imovel } from '@/lib/types'
 
 const BADGE_FILTERS: { label: string; value: BadgeType | 'Todos' }[] = [
   { label: 'Todos',      value: 'Todos' },
@@ -17,8 +18,20 @@ const BADGE_FILTERS: { label: string; value: BadgeType | 'Todos' }[] = [
 export default function ImoveisPage() {
   const [activeFilter, setActiveFilter] = useState<BadgeType | 'Todos'>('Todos')
   const [filters, setFilters] = useState<SearchFilters>({})
+  const [allImoveis, setAllImoveis] = useState<Imovel[]>(IMOVEIS)
 
-  const filtered = IMOVEIS.filter(i => {
+  useEffect(() => {
+    fetch('/api/imoveis')
+      .then((r) => r.json())
+      .then(({ properties, source }) => {
+        if (source === 'supabase' && properties?.length > 0) {
+          setAllImoveis(properties.map(imovelDBToImovel))
+        }
+      })
+      .catch(() => {})
+  }, [])
+
+  const filtered = allImoveis.filter((i) => {
     if (activeFilter !== 'Todos' && i.badge !== activeFilter) return false
     if (filters.localizacao) {
       const loc = filters.localizacao.toLowerCase()
@@ -37,13 +50,13 @@ export default function ImoveisPage() {
         >
           <span className="text-gold text-xs font-semibold tracking-widest uppercase">Portfólio Completo</span>
           <h1 className="font-serif text-4xl mt-2 mb-2">Todos os <span className="text-gold">Imóveis</span></h1>
-          <p className="text-muted">{IMOVEIS.length} imóveis disponíveis em Belo Horizonte</p>
+          <p className="text-muted">{allImoveis.length} imóveis disponíveis em Belo Horizonte</p>
         </motion.div>
 
         <SearchBar onSearch={setFilters} className="mb-8" />
 
         <div className="flex gap-3 mb-10 flex-wrap">
-          {BADGE_FILTERS.map(f => (
+          {BADGE_FILTERS.map((f) => (
             <button
               key={f.value}
               onClick={() => setActiveFilter(f.value)}
@@ -58,10 +71,7 @@ export default function ImoveisPage() {
           ))}
         </div>
 
-        <motion.div
-          layout
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
-        >
+        <motion.div layout className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filtered.map((imovel, i) => (
             <motion.div
               key={imovel.id}

@@ -5,6 +5,10 @@ import Link from 'next/link'
 import { motion, AnimatePresence } from 'framer-motion'
 import { WHATSAPP_URL } from '@/lib/constants'
 
+interface HeaderProps {
+  whatsappUrl?: string
+}
+
 const NAV_LINKS = [
   { href: '/#imoveis',  label: 'Imóveis' },
   { href: '/#sobre',    label: 'Sobre' },
@@ -12,7 +16,8 @@ const NAV_LINKS = [
   { href: '/imoveis',   label: 'Portfólio' },
 ]
 
-export function Header() {
+export function Header({ whatsappUrl }: HeaderProps) {
+  const waUrl = whatsappUrl || WHATSAPP_URL
   const [scrolled, setScrolled] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
 
@@ -61,7 +66,7 @@ export function Header() {
           {/* Desktop CTA */}
           <div className="hidden md:block">
             <a
-              href={WHATSAPP_URL}
+              href={waUrl}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 bg-gold text-deep text-[0.8rem] font-semibold px-5 py-2.5 rounded-lg hover:bg-gold-light transition-colors"
@@ -137,7 +142,7 @@ export function Header() {
 
             {/* Footer CTA */}
             <motion.a
-              href={WHATSAPP_URL}
+              href={waUrl}
               target="_blank"
               rel="noopener noreferrer"
               initial={{ opacity: 0, y: 12 }}

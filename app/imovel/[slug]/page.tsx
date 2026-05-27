@@ -3,18 +3,50 @@ import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
 import { IMOVEIS, formatPreco, WHATSAPP_URL } from '@/lib/constants'
 import { Badge } from '@/components/ui/Badge'
+import { ImageGallery } from '@/components/ui/ImageGallery'
+import { isSupabaseConfigured, createPublicClient } from '@/lib/supabase'
+import { imovelDBToImovel } from '@/lib/types'
+import type { Imovel } from '@/lib/types'
+
+export const revalidate = 60
 
 interface Props {
   params: Promise<{ slug: string }>
 }
 
+async function getImovelBySlug(slug: string): Promise<Imovel | null> {
+  if (isSupabaseConfigured()) {
+    try {
+      const supabase = createPublicClient()
+      const { data } = await supabase
+        .from('imoveis')
+        .select('*')
+        .eq('slug', slug)
+        .eq('status', 'ativo')
+        .single()
+      if (data) return imovelDBToImovel(data)
+    } catch {}
+  }
+  return IMOVEIS.find((i) => i.slug === slug) ?? null
+}
+
 export async function generateStaticParams() {
-  return IMOVEIS.map(i => ({ slug: i.slug }))
+  const constantSlugs = IMOVEIS.map((i) => ({ slug: i.slug }))
+  if (!isSupabaseConfigured()) return constantSlugs
+  try {
+    const supabase = createPublicClient()
+    const { data } = await supabase.from('imoveis').select('slug').eq('status', 'ativo')
+    const dbSlugs = (data || []).map((i: { slug: string }) => ({ slug: i.slug }))
+    const all = [...constantSlugs, ...dbSlugs]
+    return all.filter((v, i, a) => a.findIndex((t) => t.slug === v.slug) === i)
+  } catch {
+    return constantSlugs
+  }
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params
-  const imovel = IMOVEIS.find(i => i.slug === slug)
+  const imovel = await getImovelBySlug(slug)
   if (!imovel) return { title: 'Imóvel não encontrado' }
   return {
     title: `${imovel.titulo} | Velória Imóveis`,
@@ -22,12 +54,56 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
 }
 
+function VideoEmbed({ url }: { url: string }) {
+  const isYoutube = url.includes('youtube.com') || url.includes('youtu.be')
+  const isVimeo = url.includes('vimeo.com')
+
+  if (isYoutube) {
+    const match = url.match(/(?:v=|youtu\.be\/)([^&?/]+)/)
+    const videoId = match?.[1]
+    if (!videoId) return null
+    return (
+      <iframe
+        src={`https://www.youtube.com/embed/${videoId}`}
+        className="w-full aspect-video rounded-xl"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowFullScreen
+      />
+    )
+  }
+
+  if (isVimeo) {
+    const match = url.match(/vimeo\.com\/(\d+)/)
+    const videoId = match?.[1]
+    if (!videoId) return null
+    return (
+      <iframe
+        src={`https://player.vimeo.com/video/${videoId}`}
+        className="w-full aspect-video rounded-xl"
+        allow="autoplay; fullscreen; picture-in-picture"
+        allowFullScreen
+      />
+    )
+  }
+
+  return (
+    <video
+      src={url}
+      controls
+      className="w-full aspect-video rounded-xl bg-black"
+      preload="metadata"
+    />
+  )
+}
+
 export default async function ImovelPage({ params }: Props) {
   const { slug } = await params
-  const imovel = IMOVEIS.find(i => i.slug === slug)
+  const imovel = await getImovelBySlug(slug)
   if (!imovel) notFound()
 
   const waMsg = encodeURIComponent(`Olá! Tenho interesse no imóvel: ${imovel.titulo} — ${formatPreco(imovel)}`)
+  const allImages = imovel.imagens?.length ? imovel.imagens : imovel.imagem ? [imovel.imagem] : []
+  const allVideos = imovel.videos?.length ? imovel.videos : imovel.video_url ? [imovel.video_url] : []
 
   return (
     <div className="min-h-screen pt-24 pb-20 bg-deep">
@@ -45,17 +121,16 @@ export default async function ImovelPage({ params }: Props) {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
           <div className="lg:col-span-2">
 
-            {/* Main image */}
-            <div className="relative aspect-video rounded-2xl overflow-hidden border border-border mb-6 bg-card-gradient">
-              {imovel.imagem ? (
-                <Image
-                  src={imovel.imagem}
-                  alt={imovel.titulo}
-                  fill
-                  className="object-cover"
-                  priority
-                />
-              ) : (
+            {/* Badge */}
+            <div className="mb-4">
+              <Badge type={imovel.badge} />
+            </div>
+
+            {/* Gallery */}
+            {allImages.length > 0 ? (
+              <ImageGallery images={allImages} title={imovel.titulo} />
+            ) : (
+              <div className="relative aspect-video rounded-2xl overflow-hidden border border-border mb-6 bg-card">
                 <div className="absolute inset-0 flex items-center justify-center"
                   style={{ backgroundImage: 'repeating-linear-gradient(45deg, rgba(255,255,255,.015) 0px, rgba(255,255,255,.015) 1px, transparent 1px, transparent 12px)' }}
                 >
@@ -64,14 +139,10 @@ export default async function ImovelPage({ params }: Props) {
                     <polyline points="9 22 9 12 15 12 15 22"/>
                   </svg>
                 </div>
-              )}
-              <div className="absolute inset-0 bg-gradient-to-t from-deep/40 via-transparent to-transparent pointer-events-none" />
-              <div className="absolute top-4 left-4">
-                <Badge type={imovel.badge} />
               </div>
-            </div>
+            )}
 
-            <h1 className="font-serif text-3xl mb-2">{imovel.titulo}</h1>
+            <h1 className="font-serif text-3xl mt-6 mb-2">{imovel.titulo}</h1>
             <p className="text-muted flex items-center gap-2 mb-7">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/>
@@ -85,7 +156,7 @@ export default async function ImovelPage({ params }: Props) {
                 { label: 'Área total', value: `${imovel.area}m²` },
                 { label: imovel.suite ? 'Suítes' : 'Quartos', value: String(imovel.quartos) },
                 { label: 'Vagas de garagem', value: String(imovel.vagas) },
-              ].map(attr => (
+              ].map((attr) => (
                 <div key={attr.label} className="bg-card border border-border rounded-xl p-5 text-center hover:border-gold/30 transition-colors">
                   <div className="font-serif text-2xl text-gold">{attr.value}</div>
                   <div className="text-xs text-muted mt-1.5 uppercase tracking-wider">{attr.label}</div>
@@ -100,11 +171,28 @@ export default async function ImovelPage({ params }: Props) {
               </div>
             )}
 
+            {/* Videos */}
+            {allVideos.length > 0 && (
+              <div className="bg-card border border-border rounded-xl p-7 mb-6">
+                <h2 className="font-serif text-xl mb-5 flex items-center gap-2">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" strokeWidth="1.8">
+                    <polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/>
+                  </svg>
+                  {allVideos.length === 1 ? 'Vídeo do Imóvel' : 'Vídeos do Imóvel'}
+                </h2>
+                <div className="space-y-4">
+                  {allVideos.map((url, i) => (
+                    <VideoEmbed key={i} url={url} />
+                  ))}
+                </div>
+              </div>
+            )}
+
             {/* Features */}
             <div className="bg-card border border-border rounded-xl p-7">
               <h2 className="font-serif text-xl mb-5">Diferenciais</h2>
               <div className="grid grid-cols-2 gap-3">
-                {['Portaria 24h', 'Área de lazer', 'Vaga coberta', 'Interfone', 'Elevador', 'Salão de festas'].map(item => (
+                {['Portaria 24h', 'Área de lazer', 'Vaga coberta', 'Interfone', 'Elevador', 'Salão de festas'].map((item) => (
                   <div key={item} className="flex items-center gap-2.5 text-sm text-muted">
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" strokeWidth="2.5">
                       <polyline points="20 6 9 17 4 12"/>

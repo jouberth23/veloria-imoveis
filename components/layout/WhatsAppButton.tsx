@@ -2,9 +2,11 @@
 
 import { useState } from 'react'
 import { motion } from 'framer-motion'
-import { WHATSAPP_URL } from '@/lib/constants'
+interface Props {
+  url: string
+}
 
-export function WhatsAppButton() {
+export function WhatsAppButton({ url }: Props) {
   const [hovered, setHovered] = useState(false)
 
   return (
@@ -30,7 +32,7 @@ export function WhatsAppButton() {
           transition={{ duration: 2, repeat: Infinity }}
         />
         <a
-          href={WHATSAPP_URL}
+          href={url}
           target="_blank"
           rel="noopener noreferrer"
           onMouseEnter={() => setHovered(true)}

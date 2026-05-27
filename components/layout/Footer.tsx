@@ -1,5 +1,6 @@
 import Link from 'next/link'
-import { EMPRESA, WHATSAPP_URL } from '@/lib/constants'
+import { EMPRESA } from '@/lib/constants'
+import { getConfiguracoes } from '@/lib/configuracoes'
 
 const QUICK_LINKS = [
   { href: '/',        label: 'Início' },
@@ -15,7 +16,24 @@ const SERVICE_LINKS = [
   'Consultoria Jurídica', 'Financiamento', 'Adm. Condomínios',
 ]
 
-export function Footer() {
+export async function Footer() {
+  const cfg = await getConfiguracoes()
+  const whatsappUrl = `https://wa.me/${cfg.whatsapp_number}`
+  const socialIcons = [
+    {
+      label: 'Instagram', href: cfg.instagram_url || '#',
+      icon: <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" strokeWidth="2"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>,
+    },
+    {
+      label: 'Facebook', href: cfg.facebook_url || '#',
+      icon: <svg width="14" height="14" viewBox="0 0 24 24" fill="#C9A84C"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>,
+    },
+    {
+      label: 'LinkedIn', href: cfg.linkedin_url || '#',
+      icon: <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" strokeWidth="2"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg>,
+    },
+  ]
+
   return (
     <footer className="bg-[#060E1A] pb-8">
       <div className="h-px bg-gradient-to-r from-transparent via-gold/30 to-transparent" />
@@ -37,7 +55,7 @@ export function Footer() {
             </div>
           </div>
           <a
-            href={WHATSAPP_URL}
+            href={whatsappUrl}
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center gap-2.5 bg-[#25D366] text-white text-sm font-semibold px-6 py-3 rounded-xl hover:brightness-110 transition-all"
@@ -85,10 +103,10 @@ export function Footer() {
             <h5 className="font-serif text-base mb-5 text-off-white">Contato</h5>
             <div className="space-y-4">
               {[
-                { icon: <MapIcon />, text: EMPRESA.endereco },
-                { icon: <PhoneIcon />, text: EMPRESA.telefone },
-                { icon: <MailIcon />, text: EMPRESA.email },
-                { icon: <ClockIcon />, text: EMPRESA.horario },
+                { icon: <MapIcon />, text: cfg.endereco },
+                { icon: <PhoneIcon />, text: cfg.telefone },
+                { icon: <MailIcon />, text: cfg.email },
+                { icon: <ClockIcon />, text: cfg.horario },
               ].map((item, i) => (
                 <div key={i} className="flex items-start gap-2.5 text-muted text-sm">
                   <span className="mt-0.5 flex-shrink-0">{item.icon}</span>
@@ -101,7 +119,7 @@ export function Footer() {
           <div>
             <h5 className="font-serif text-base mb-5 text-off-white">Redes Sociais</h5>
             <div className="flex flex-col gap-3">
-              {SOCIAL_ICONS.map(s => (
+              {socialIcons.map(s => (
                 <a key={s.label} href={s.href} aria-label={s.label}
                    className="flex items-center gap-3 text-muted text-sm hover:text-gold transition-colors group">
                   <div className="w-8 h-8 bg-white/5 border border-border rounded-lg flex items-center justify-center group-hover:bg-gold/15 group-hover:border-gold/40 transition-all flex-shrink-0">
@@ -118,7 +136,7 @@ export function Footer() {
           <p className="text-muted text-xs">© 2024 Velória Imóveis. Todos os direitos reservados.</p>
           <div className="flex items-center gap-1.5 text-gold text-xs bg-gold/8 border border-gold/20 px-3.5 py-1.5 rounded-full">
             <ShieldIcon />
-            {EMPRESA.creci}
+            {cfg.creci}
           </div>
           <p className="text-muted text-xs">
             <a href="#" className="hover:text-gold transition-colors">Política de Privacidade</a>
@@ -131,20 +149,6 @@ export function Footer() {
   )
 }
 
-const SOCIAL_ICONS = [
-  {
-    label: 'Instagram', href: '#',
-    icon: <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" strokeWidth="2"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>,
-  },
-  {
-    label: 'Facebook', href: '#',
-    icon: <svg width="14" height="14" viewBox="0 0 24 24" fill="#C9A84C"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>,
-  },
-  {
-    label: 'LinkedIn', href: '#',
-    icon: <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" strokeWidth="2"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg>,
-  },
-]
 
 function MapIcon()   { return <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" strokeWidth="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg> }
 function PhoneIcon() { return <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" strokeWidth="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.67A2 2 0 012 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 14.92z"/></svg> }
